@@ -3,7 +3,6 @@ import React from "react";
 //Components
 
 //User Provider
-import { UserProvider } from "./contexts/userContext.js";
 
 //External Libs
 import { Route, Redirect, Switch } from "react-router-dom";
