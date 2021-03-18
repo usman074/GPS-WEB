@@ -18,4 +18,6 @@ export const SidemenuWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
     grid-area: content;
+    height: 100vh;
+    background: white;
 `;
