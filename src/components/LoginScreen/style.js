@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const LoginWrapper = styled.div`
   /* background: red; */
   background-image: url("https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-600w-1725825019.jpg");
+  /* background-image: url('src/assets/BACKGROUND.png'); */
   background-repeat: no-repeat, repeat;
   background-position: center;
   background-size: 100% 100%; 
@@ -44,15 +45,19 @@ export const LoginContainer = styled.div`
     font-size: 1.7rem;
     font-weight: 700;
     margin-bottom: 0.5rem !important;
+    letter-spacing: 0.1rem;
   }
 
   .login-button {
-    max-width: 130px;
+    max-width: 13rem;
     background: rgba(70, 70, 70, 0.5);
+    border-radius: 1rem;
 
     span {
       font-size: 1.7rem;
       font-weight: 700;
+      letter-spacing: 0.1rem;
+      
     }
   }
 `;
