@@ -1,10 +1,24 @@
 import React from "react";
 import { SettingsLeftPanel, Input, Button } from "../common";
-import { ContentWrapper, CreateUserContainer } from "./style";
+import {
+  ContentWrapper,
+  CreateUserContainer,
+  UsersListContainer,
+} from "./style";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 export const CreateUserScreen = () => {
+  const usersList = [
+    "usman",
+    "usman",
+    "usman",
+    "usman",
+    "usman",
+    "usman",
+    "usman",
+  ];
   const validateCreateUserForm = () => {
     return Yup.object({
       name: Yup.string().required("Required"),
@@ -41,19 +55,40 @@ export const CreateUserScreen = () => {
         >
           <Form>
             <p className="label">Name</p>
-            <Input className="create-user-input" name="name" placeholder="Hello" type="text" />
+            <Input
+              className="create-user-input"
+              name="name"
+              placeholder="Hello"
+              type="text"
+            />
 
             <p className="label">Username</p>
-            <Input className="create-user-input" name="username" placeholder="hello@Sample.com" type="text" />
+            <Input
+              className="create-user-input"
+              name="username"
+              placeholder="hello@Sample.com"
+              type="text"
+            />
 
             <p className="label">Email</p>
-            <Input className="create-user-input" name="email" placeholder="hello@Sample.com" type="text" />
+            <Input
+              className="create-user-input"
+              name="email"
+              placeholder="hello@Sample.com"
+              type="text"
+            />
 
             <p className="label">Password</p>
-            <Input className="create-user-input" name="password" type="password" placeholder="********" />
+            <Input
+              className="create-user-input"
+              name="password"
+              type="password"
+              placeholder="********"
+            />
 
             <p className="label">Confirm Password</p>
-            <Input className="create-user-input"
+            <Input
+              className="create-user-input"
               name="confirmPassword"
               type="password"
               placeholder="********"
@@ -67,9 +102,22 @@ export const CreateUserScreen = () => {
           </Form>
         </Formik>
       </CreateUserContainer>
-          
+
       <div className="vlTwo"></div>
 
+      <UsersListContainer>
+        <Button className="user-list-button" name={"Users List"} />
+        {usersList.map((users, index) => (
+          <div className="usersListWrapper">
+            <p>{index}.</p>
+            <p className="user-name">{users}</p>
+            <div className="user-list-icons">
+              <EditOutlined style={{color: 'white', background: '#03F346', borderRadius: '0.5rem', padding: '0.3rem', marginRight: '0.3rem' }} />
+              <DeleteOutlined style={{color: 'white', background: '#F30303', borderRadius: '0.5rem', padding: '0.3rem' }} />
+            </div>
+          </div>
+        ))}
+      </UsersListContainer>
     </ContentWrapper>
   );
 };
