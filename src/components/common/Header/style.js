@@ -5,6 +5,7 @@ export const HeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2rem 3rem 2rem 5rem;
+  background: #F8F8F8 !important;
 
   .header-buttons {
     width: 15rem;
