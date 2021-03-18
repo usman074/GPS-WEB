@@ -27,6 +27,7 @@ export const DrawerStyled = styled(Drawer)`
     background: white;
     max-width: 16rem;
     max-height: 3.3rem;
+    border-radius: 1rem;
   }
 `;
 
