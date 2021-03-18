@@ -25,8 +25,8 @@ export const DrawerStyled = styled(Drawer)`
     font-size: 1.2rem;
     color: #6c6c6c;
     background: white;
-    width: 160px;
-    height: 33px;
+    max-width: 16rem;
+    max-height: 3.3rem;
   }
 `;
 
