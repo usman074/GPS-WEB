@@ -6,6 +6,7 @@ export const StyledInput = styled(Input)`
   border-radius: 0.7rem;
   min-height: 4rem;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+  border: none;
   &::placeholder {
     color: #6C6C6C;
   }
