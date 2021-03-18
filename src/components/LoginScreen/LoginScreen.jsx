@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Button, Input } from "../common";
 import { LoginWrapper, LoginContainer } from "./style";
@@ -7,7 +7,7 @@ export const LoginScreen = () => {
   const validateLoginForm = () => {
     return Yup.object({
       password: Yup.string()
-        .min(8, "Must be 20 characters or less")
+        .min(8, "Must be 8 characters or more")
         .required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
     });
