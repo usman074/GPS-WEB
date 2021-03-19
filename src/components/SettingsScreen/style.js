@@ -107,7 +107,8 @@ export const ListContainer = styled.div`
     .user-list-icons {
       position: absolute;
       right: 2rem;
-      top: 0.5rem;
+      top: 0.7rem;
+      display: flex;
     }
   }
 `;
