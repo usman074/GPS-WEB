@@ -4,8 +4,13 @@ export const ContentWrapper = styled.div`
   grid-area: ${(props) => props.gridArea};
   padding: 8rem 6rem 0px 8rem;
 
+  @media (max-width: 1150px) {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .settings-buttons {
-    margin-bottom: 3rem;
+    margin: 0px 1rem 3rem 0px;
     width: 20rem;
     max-height: 4.5rem;
     background: #F8F8F8;
