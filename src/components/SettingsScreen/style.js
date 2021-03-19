@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ContentWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1.5fr auto 1fr;
-  grid-template-areas: "options verticalLineOne userForm verticalLineTwo usersList";
+  grid-template-areas: "leftPanel verticalLineOne middlePanel verticalLineTwo rightPanel";
   .vlOne,
   .vlTwo {
     border-left: 1px solid black;
@@ -18,7 +18,7 @@ export const ContentWrapper = styled.div`
 
   @media (max-width: 1150px) {
     grid-template-columns: 1fr auto 1fr;
-    grid-template-areas: "options options options" "userForm verticalLineTwo usersList";
+    grid-template-areas: "leftPanel leftPanel leftPanel" "middlePanel verticalLineTwo rightPanel";
     .vlOne {
       display: none;
     }
@@ -26,7 +26,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const CreateUserContainer = styled.div`
-  grid-area: userForm;
+  grid-area: middlePanel;
   padding: 8.7rem 8rem 0px 7rem;
 
   p.label {
@@ -56,12 +56,11 @@ export const CreateUserContainer = styled.div`
 `;
 
 export const ListContainer = styled.div`
-  grid-area: usersList;
+  grid-area: rightPanel;
   padding: 2rem 1rem 0px 1rem;
 
   @media (max-width: 1150px) {
-  padding: 2rem 1rem 0px 2rem;
-
+    padding: 2rem 1rem 0px 2rem;
   }
 
   &.lang-list {
@@ -113,6 +112,7 @@ export const ListContainer = styled.div`
 `;
 
 export const LanguageListContainer = styled.div`
+  grid-area: middlePanel;
   padding: 6.4rem 6rem 0px 5rem;
 
   .ant-list-item {
@@ -137,7 +137,9 @@ export const LanguageListContainer = styled.div`
 `;
 
 export const TermsContentWrapper = styled.div`
-  p, .terms-input {
+  grid-area: middlePanel;
+  p,
+  .terms-input {
     text-align: left;
     padding: 9rem 8rem;
 
