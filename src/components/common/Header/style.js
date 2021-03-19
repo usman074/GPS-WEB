@@ -26,6 +26,7 @@ export const HeaderWrapper = styled.div`
   span {
     display: flex;
     align-items: center;
+    cursor: pointer;
     p {
       color: red;
       margin-left: 1rem !important;
