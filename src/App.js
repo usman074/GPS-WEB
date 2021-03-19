@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //Components
 import { LoginScreen } from "./components/LoginScreen/LoginScreen";
 import { CreateUserScreen } from "./components/CreateUserScreen/CreateUserScreen";
+import {Dashboard} from './components/Dashboard/Dashboard'
 import { Sidemenu, Header } from "./components/common";
 //User Provider
 
@@ -22,7 +23,7 @@ import {
 } from "./layoutStyle";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   return (
     <div className="App">
       {/* <LoginScreen /> */}
@@ -43,9 +44,9 @@ function App() {
             <Route path="/login">
               <LoginScreen isLogin={isLogin} setIsLogin={setIsLogin} />
             </Route>
-            {/* <Route path="/dashboard">
-              <CreateUserScreen />
-            </Route> */}
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
             <Route path="/settings/user">
               <CreateUserScreen />
             </Route>
