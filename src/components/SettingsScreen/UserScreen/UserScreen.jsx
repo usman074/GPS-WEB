@@ -3,9 +3,9 @@ import { CreateUserContainer,  ListContainer } from "../style";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {  DeleteOutlined } from "@ant-design/icons";
 import { Input, Button } from "../../common";
-
+import { FaRegEdit } from '@react-icons/all-files/fa/FaRegEdit';
 
 
 export const CreateUser = () => {
@@ -111,7 +111,7 @@ export const UsersList = () => {
             <p>{index}.</p>
             <p className="user-name">{users}</p>
             <div className="user-list-icons">
-              <EditOutlined style={{color: 'white', background: '#03F346', borderRadius: '0.5rem', padding: '0.3rem', marginRight: '0.3rem' }} />
+              <FaRegEdit style={{color: 'white', background: '#03F346', borderRadius: '0.5rem', padding: '0.3rem', marginRight: '0.3rem', fontSize: '2.2rem' }} />
               <DeleteOutlined style={{color: 'white', background: '#F30303', borderRadius: '0.5rem', padding: '0.3rem' }} />
             </div>
           </div>
