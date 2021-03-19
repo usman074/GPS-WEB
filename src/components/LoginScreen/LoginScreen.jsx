@@ -3,7 +3,11 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Button, Input } from "../common";
 import { LoginWrapper, LoginContainer } from "./style";
-export const LoginScreen = () => {
+import { useHistory } from "react-router-dom";
+export const LoginScreen = ({isLogin, setIsLogin}) => {
+
+  const history = useHistory();
+
   const validateLoginForm = () => {
     return Yup.object({
       password: Yup.string()
@@ -15,6 +19,8 @@ export const LoginScreen = () => {
 
   const handleLoginForm = (values) => {
     console.log(values);
+    setIsLogin(!isLogin);
+    history.replace('/dashboard')
   };
   return (
     <LoginWrapper>
