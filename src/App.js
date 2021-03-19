@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 //Components
 import { LoginScreen } from "./components/LoginScreen/LoginScreen";
 import { SettingsScreen } from "./components/SettingsScreen/SettingsScreen";
+import {IntervalScreen} from './components/IntervalScreen/IntervalScreen'
 import {Dashboard} from './components/Dashboard/Dashboard'
 import { Sidemenu, Header } from "./components/common";
 //User Provider
@@ -23,22 +24,18 @@ import {
 } from "./layoutStyle";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="App">
-      {/* <LoginScreen /> */}
       <AppContainer isLogin={isLogin}>
         <SidemenuWrapper>
           <Sidemenu isLogin={isLogin} />
         </SidemenuWrapper>
         {isLogin && (
-          <HeaderWrapper>
-            <Header />
+          <HeaderWrapper >
+            <Header setIsLogin={setIsLogin}/>
           </HeaderWrapper>
         )}
-        {/* <ContentWrapper>
-          <SettingsScreen />
-        </ContentWrapper> */}
         <Switch>
           <ContentWrapper isLogin={isLogin}>
             <Route path="/login">
@@ -46,6 +43,9 @@ function App() {
             </Route>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/interval">
+              <IntervalScreen />
             </Route>
             <Route path="/settings/user">
               <SettingsScreen />
