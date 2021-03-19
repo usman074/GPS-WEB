@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 //Components
 import { LoginScreen } from "./components/LoginScreen/LoginScreen";
-import { CreateUserScreen } from "./components/CreateUserScreen/CreateUserScreen";
+import { SettingsScreen } from "./components/SettingsScreen/SettingsScreen";
 import {Dashboard} from './components/Dashboard/Dashboard'
 import { Sidemenu, Header } from "./components/common";
 //User Provider
@@ -23,7 +23,7 @@ import {
 } from "./layoutStyle";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   return (
     <div className="App">
       {/* <LoginScreen /> */}
@@ -37,7 +37,7 @@ function App() {
           </HeaderWrapper>
         )}
         {/* <ContentWrapper>
-          <CreateUserScreen />
+          <SettingsScreen />
         </ContentWrapper> */}
         <Switch>
           <ContentWrapper isLogin={isLogin}>
@@ -48,7 +48,13 @@ function App() {
               <Dashboard />
             </Route>
             <Route path="/settings/user">
-              <CreateUserScreen />
+              <SettingsScreen />
+            </Route>
+            <Route path="/settings/language">
+              <SettingsScreen />
+            </Route>
+            <Route path="/settings/terms">
+              <SettingsScreen />
             </Route>
             <Redirect from="/" exact to="/login"></Redirect>
           </ContentWrapper>
