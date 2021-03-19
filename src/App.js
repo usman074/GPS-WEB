@@ -22,7 +22,7 @@ import {
 } from "./layoutStyle";
 
 function App() {
-  const  [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="App">
       {/* <LoginScreen /> */}
@@ -30,25 +30,27 @@ function App() {
         <SidemenuWrapper>
           <Sidemenu isLogin={isLogin} />
         </SidemenuWrapper>
-        {isLogin && <HeaderWrapper>
-          <Header />
-        </HeaderWrapper>}
+        {isLogin && (
+          <HeaderWrapper>
+            <Header />
+          </HeaderWrapper>
+        )}
         {/* <ContentWrapper>
           <CreateUserScreen />
         </ContentWrapper> */}
         <Switch>
-          <Route path="/login">
-            <LoginScreen isLogin={isLogin} setIsLogin={setIsLogin} />
-          </Route>
-          <ContentWrapper>
+          <ContentWrapper isLogin={isLogin}>
+            <Route path="/login">
+              <LoginScreen isLogin={isLogin} setIsLogin={setIsLogin} />
+            </Route>
             {/* <Route path="/dashboard">
               <CreateUserScreen />
             </Route> */}
             <Route path="/settings/user">
               <CreateUserScreen />
             </Route>
+            <Redirect from="/" exact to="/login"></Redirect>
           </ContentWrapper>
-          <Redirect from="/" exact to="/login"></Redirect>
         </Switch>
       </AppContainer>
     </div>
