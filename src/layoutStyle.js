@@ -10,10 +10,10 @@ export const AppContainer = styled.div`
 
 export const HeaderWrapper = styled.div`
     grid-area: header;
-    position: fixed;
+    /* position: fixed;
     right: 0px;
     width: calc(100% - 256px);
-    z-index: 1;
+    z-index: 1; */
 `;
 
 export const SidemenuWrapper = styled.div`
