@@ -97,6 +97,7 @@ export const ListContainer = styled.div`
       width: 100%;
       text-align: left;
       color: #6c6c6c;
+      box-shadow: 1px 1px 1px 1px rgba(211, 194, 194, 0.25);
     }
 
     p.lang-name {
