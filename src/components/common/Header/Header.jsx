@@ -5,13 +5,13 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Space } from "antd";
 import { useLocation, useHistory } from "react-router-dom";
 
-export const Header = () => {
+export const Header = ({setIsLogin}) => {
   const location = useLocation();
   const {pathname} = location;
   const history = useHistory()
   const changeScreen = (name)=> {
-    console.log(name)
     history.replace(name)
+    if (name === '/login') setIsLogin(false);
   }
   
   return (
@@ -21,7 +21,7 @@ export const Header = () => {
         <Button name="Interval" className={`header-buttons ${pathname === '/interval'? 'active': ''}`} clickEvent={()=> changeScreen('/interval')}/>
         <Button name="Settings" className={`header-buttons ${pathname === '/settings/user' || pathname === '/settings/language' || pathname === '/settings/terms'? 'active': ''}`} clickEvent={()=> changeScreen('/settings/user')}/>
       </Space>
-      <span>
+      <span onClick={()=> changeScreen('/login')} >
         <UploadOutlined style={{color: 'red'}} /> <p>Log Out</p>
       </span>
     </HeaderWrapper>
