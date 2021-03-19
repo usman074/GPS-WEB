@@ -1,22 +1,12 @@
 import styled from "styled-components";
 
 export const LoginWrapper = styled.div`
-  background: pink;
-  /* background-image: url("https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-600w-1725825019.jpg"); */
-  /* background-image: url(../../../assets); */
+  background-image: url('BACKGROUND.png');
   background-repeat: no-repeat, repeat;
   background-position: center;
   background-size: 100% 100%; 
 `;
 export const LoginContainer = styled.div`
-  /* background: red; */
-  /* background-image: url("https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-600w-1725825019.jpg");
-  background-repeat: no-repeat, repeat;
-  background-position: center;
-  background-size: cover; */
-  /* color: white; */
-  /* background-image: url("../../assets/BACKGROUND_IMAGE.png"); */
-
   display: grid;
   justify-content:center;
   height: 100vh;
