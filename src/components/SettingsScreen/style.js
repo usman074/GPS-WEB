@@ -72,6 +72,7 @@ export const ListContainer = styled.div`
     background: #464646;
     border-radius: 0.5rem;
     margin-bottom: 2rem !important;
+    cursor: text;
 
     span {
       font-size: 1.5rem;

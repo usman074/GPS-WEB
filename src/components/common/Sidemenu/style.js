@@ -18,6 +18,7 @@ export const DrawerStyled = styled(Drawer)`
     margin-bottom: 2rem;
     background: white;
     color: black;
+    cursor: text;
   }
 
   .vehicles {
