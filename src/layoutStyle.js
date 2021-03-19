@@ -17,7 +17,7 @@ export const SidemenuWrapper = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-    grid-area: content;
-    height: 100vh;
+    grid-area: ${props=> props.isLogin? 'content': 'unset'};
+    height: ${props=> props.isLogin? '100vh': 'auto'};
     background: white;
 `;
