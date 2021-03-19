@@ -2,7 +2,7 @@ import React from "react";
 import { DrawerStyled } from "./style";
 import { Button } from "../index";
 
-export const Sidemenu = () => {
+export const Sidemenu = ({isLogin}) => {
   const x = [
     "Fm 113 / OW 652 Cs",
     "Fm 113 / OW 652 Cs",
@@ -15,7 +15,7 @@ export const Sidemenu = () => {
       title="WEB GPS"
       placement="left"
       closable={false}
-      visible={true}
+      visible={isLogin}
       mask={false}
       contentWrapperStyle={{ boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.25)" }}
       headerStyle={{
