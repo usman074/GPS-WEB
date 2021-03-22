@@ -31,7 +31,7 @@ export const LoginScreen = ({isLogin, setIsLogin}) => {
           onSubmit={handleLoginForm}
         >
           <Form>
-            <h1 className="page-heading">Welcome To GPS Web</h1>
+            <h1 className="page-heading">Welcome To <br /> TFM GPS Tracking</h1>
             <h1 className="form-heading">Sign In</h1>
 
             <p className="label">Email</p>

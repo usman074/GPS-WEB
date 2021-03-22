@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const LoginWrapper = styled.div`
-  background-image: url('BACKGROUND.png');
+  background-image: url('background.jpeg');
   background-repeat: no-repeat, repeat;
   background-position: center;
   background-size: 100% 100%; 
@@ -21,7 +21,7 @@ export const LoginContainer = styled.div`
     font-weight: 700;
     margin-bottom: 2rem !important;
     margin-top: 2rem !important;
-    max-width: 30rem;
+    max-width: 35rem;
   }
   h1.form-heading {
     color: #ffffff;
