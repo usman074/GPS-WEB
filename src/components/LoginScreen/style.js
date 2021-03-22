@@ -1,19 +1,21 @@
 import styled from "styled-components";
 
 export const LoginWrapper = styled.div`
-  background-image: url('background.jpeg');
+  background-image: url("background.png");
   background-repeat: no-repeat, repeat;
   background-position: center;
-  background-size: 100% 100%; 
+  background-size: 100% 100%;
 `;
 export const LoginContainer = styled.div`
   display: grid;
-  justify-content:center;
+  justify-content: center;
   height: 100vh;
 
   form {
     max-width: 490px;
     min-width: 300px;
+    /* background: black;
+    opacity: 60%; */
   }
   h1.page-heading {
     color: #ffffff;
@@ -47,7 +49,6 @@ export const LoginContainer = styled.div`
       font-size: 1.7rem;
       font-weight: 700;
       letter-spacing: 0.1rem;
-      
     }
   }
 `;
