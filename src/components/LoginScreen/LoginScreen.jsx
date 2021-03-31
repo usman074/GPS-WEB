@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Button, Input } from "../common";
 import { LoginWrapper, LoginContainer } from "./style";
 import { useHistory } from "react-router-dom";
-export const LoginScreen = ({isLogin, setIsLogin}) => {
+import { auth, generateUserDocument } from "../../firebase";
+import { useAuthContext } from "../../providers/AuthProvider";
+
+
+export const LoginScreen = (props) => {
+  const { isLogin, setIsLogin } = props;
 
   const history = useHistory();
+  const { state, dispatch } = useAuthContext();
+
+
+  useEffect(() => {
+    if (!isLogin && state.user && state.isLogin) {
+      setIsLogin(true);
+      localStorage.setItem("uid", state.user.uid);
+      history.replace("/dashboard");
+    }
+  }, [state]);
+
+
 
   const validateLoginForm = () => {
     return Yup.object({
@@ -17,11 +34,23 @@ export const LoginScreen = ({isLogin, setIsLogin}) => {
     });
   };
 
-  const handleLoginForm = (values) => {
-    console.log(values);
-    setIsLogin(!isLogin);
-    history.replace('/dashboard')
+  const handleLoginForm = async (values) => {
+    try {
+      const { user } = await auth.signInWithEmailAndPassword(
+        values.email,
+        values.password
+      );
+      const userDoc = await generateUserDocument(user, { isAdmin: true });
+
+      if (userDoc.isAdmin) {
+        dispatch({ type: "SAVE_USER", payload: userDoc });
+      }
+    } catch (error) {
+      console.log("error", error);
+      dispatch({ type: "DEL_USER", payload: null });
+    }
   };
+  
   return (
     <LoginWrapper>
       <LoginContainer>
@@ -31,7 +60,9 @@ export const LoginScreen = ({isLogin, setIsLogin}) => {
           onSubmit={handleLoginForm}
         >
           <Form>
-            <h1 className="page-heading">Welcome To <br /> TFM GPS Tracking</h1>
+            <h1 className="page-heading">
+              Welcome To <br /> TFM GPS Tracking
+            </h1>
             <h1 className="form-heading">Sign In</h1>
 
             <p className="label">Email</p>

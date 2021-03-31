@@ -1,44 +1,112 @@
-import React from "react";
-import { CreateUserContainer,  ListContainer } from "../style";
+import React, { useEffect, useState } from "react";
+import { CreateUserContainer, ListContainer } from "../style";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import {  DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Input, Button } from "../../common";
-import { FaRegEdit } from '@react-icons/all-files/fa/FaRegEdit';
-
+import { FaRegEdit } from "@react-icons/all-files/fa/FaRegEdit";
+import {
+  auth,
+  generateUserDocument,
+  getUsersList,
+  updateUserDocument,
+  delUserDocument
+} from "../../../firebase";
+import { useUserContext } from "../../../providers/UserProvider";
+import { useAuthContext } from "../../../providers/AuthProvider";
 
 export const CreateUser = () => {
+  const { state, dispatch } = useUserContext();
+  const {
+    state: { user },
+  } = useAuthContext();
+  const [uid, setUid] = useState(null);
+  const { currentUser } = state;
 
-      const validateCreateUserForm = () => {
-        return Yup.object({
-          name: Yup.string().required("Required"),
-          username: Yup.string().required("Required"),
-          email: Yup.string().email("Invalid email address").required("Required"),
-          password: Yup.string()
-            .min(8, "Must be 8 characters or more")
-            .required("Required"),
-          confirmPassword: Yup.string()
-            .min(8, "Must be 8 characters or more")
-            .required("Required"),
+  useEffect(() => {
+    if (user) {
+      setUid(user.uid);
+    }
+  }, [user]);
+  const validateCreateUserForm = () => {
+    if (currentUser) {
+      return Yup.object({
+        name: Yup.string().required("Required"),
+        username: Yup.string().required("Required"),
+        email: Yup.string().email("Invalid email address").required("Required"),
+      });
+    } else {
+      return Yup.object({
+        name: Yup.string().required("Required"),
+        username: Yup.string().required("Required"),
+        email: Yup.string().email("Invalid email address").required("Required"),
+        password: Yup.string()
+          .min(8, "Must be 8 characters or more")
+          .required("Required"),
+        confirmPassword: Yup.string()
+          .min(8, "Must be 8 characters or more")
+          .required("Required"),
+      });
+    }
+  };
+
+  const handleCreateUserForm = async (values, actions) => {
+    try {
+      if (currentUser) {
+        console.log(currentUser)
+        const editedData = {
+          name: values.name,
+          email: values.email,
+          username: values.username,
+          isAdmin: false,
+          adminId: uid,
+        }
+        const userDoc = await updateUserDocument({
+          ...editedData,
+          uid: currentUser.uid
         });
-      };
-    
-      const handleCreateUserForm = (values) => {
-        console.log(values);
-      };
+        console.log(userDoc)
+        if (userDoc) {
+          dispatch({ type: "EDIT_USER", payload: editedData, uid: currentUser.uid });
+        }
+
+      } else {
+        const { user } = await auth.createUserWithEmailAndPassword(
+          values.email,
+          values.password
+        );
+        const userDoc = await generateUserDocument(user, {
+          name: values.name,
+          username: values.username,
+          isAdmin: false,
+          adminId: uid,
+        });
+        dispatch({ type: "ADD_USER", payload: userDoc });
+      }
+      actions.resetForm();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <CreateUserContainer>
       <Formik
-        initialValues={{
-          name: "",
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        }}
+        initialValues={
+          currentUser
+            ? currentUser
+            : {
+                name: "",
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+              }
+        }
         validationSchema={validateCreateUserForm}
         onSubmit={handleCreateUserForm}
+        enableReinitialize
       >
         <Form>
           <p className="label">Name</p>
@@ -65,26 +133,30 @@ export const CreateUser = () => {
             type="text"
           />
 
-          <p className="label">Password</p>
-          <Input
-            className="create-user-input"
-            name="password"
-            type="password"
-            placeholder="********"
-          />
+          {!currentUser && (
+            <>
+              <p className="label">Password</p>
+              <Input
+                className="create-user-input"
+                name="password"
+                type="password"
+                placeholder="********"
+              />
 
-          <p className="label">Confirm Password</p>
-          <Input
-            className="create-user-input"
-            name="confirmPassword"
-            type="password"
-            placeholder="********"
-          />
+              <p className="label">Confirm Password</p>
+              <Input
+                className="create-user-input"
+                name="confirmPassword"
+                type="password"
+                placeholder="********"
+              />
+            </>
+          )}
 
           <Button
             className="create-user-button"
             type="submit"
-            name={"Create"}
+            name={currentUser? "Update": "Create"}
           />
         </Form>
       </Formik>
@@ -93,29 +165,72 @@ export const CreateUser = () => {
 };
 
 export const UsersList = () => {
-    const usersList = [
-        "usman",
-        "usman",
-        "usman",
-        "usman",
-        "usman",
-        "usman",
-        "usman",
-      ];
-      
-      return (
-        <ListContainer>
-        <Button className="user-list-button" name={"Users List"} />
-        {usersList.map((users, index) => (
-          <div className="usersListWrapper">
-            <p>{index}.</p>
-            <p className="user-name">{users}</p>
-            <div className="user-list-icons">
-              <FaRegEdit style={{color: 'white', background: '#03F346', borderRadius: '0.5rem', padding: '0.3rem', marginRight: '0.3rem', fontSize: '2.2rem' }} />
-              <DeleteOutlined style={{color: 'white', background: '#F30303', borderRadius: '0.5rem', padding: '0.3rem' }} />
+  const { state, dispatch } = useUserContext();
+  const { users: usersList } = state;
+  console.log("update", usersList)
+
+  const [uid, setUid] = useState(null);
+  const {
+    state: { user },
+  } = useAuthContext();
+
+  useEffect(() => {
+    if (user) {
+      setUid(user.uid);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const callApi = async () => {
+      const users = await getUsersList();
+      console.log(users)
+      dispatch({ type: "INITIALIZE_USERS", payload: users });
+    };
+    callApi();
+  }, []);
+
+  const handleDelUser = (uid)=> {
+    delUserDocument(uid);
+  }
+
+  return (
+    <ListContainer>
+      <Button className="user-list-button" name={"Users List"} />
+
+      {usersList
+        .filter((user) => user.adminId === uid)
+        .map((users, index) => {
+          return (
+            <div key={users.uid} className="usersListWrapper">
+              <p>{index + 1}.</p>
+              <p className="user-name">{users.name}</p>
+              <div className="user-list-icons">
+                <FaRegEdit
+                  style={{
+                    color: "white",
+                    background: "#03F346",
+                    borderRadius: "0.5rem",
+                    padding: "0.3rem",
+                    marginRight: "0.3rem",
+                    fontSize: "2.2rem",
+                  }}
+                  onClick={() =>
+                    dispatch({ type: "CURRENT_USER", uid: users.uid })
+                  }
+                />
+                <DeleteOutlined
+                  style={{
+                    color: "white",
+                    background: "#F30303",
+                    borderRadius: "0.5rem",
+                    padding: "0.3rem",
+                  }}
+                  onClick={()=> handleDelUser(user.uid)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </ListContainer>
-      )
+          );
+        })}
+    </ListContainer>
+  );
 };
