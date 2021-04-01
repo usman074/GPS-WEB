@@ -2,14 +2,6 @@ import React, { Component } from "react";
 import { StyledInput, InputWrapper } from "./style";
 import { useField } from "formik";
 
-// customStyle={
-//     height: 'value'
-//     border: 'value'
-//     borderBottom: 'value'
-//     placeHolderColor: 'value'
-//     errorColor: 'value'
-// }
-
 export const Input = ({
   placeholder,
   customStyle,
