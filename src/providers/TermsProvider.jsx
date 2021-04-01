@@ -11,6 +11,11 @@ function termsReducer(state = initialState, action) {
         ...state,
         terms: action.payload,
       };
+    case "UPDATE_TERMS":
+      return {
+        ...state,
+        terms: action.payload,
+      };
     default:
       return state;
   }
