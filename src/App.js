@@ -14,6 +14,8 @@ import {
 //Provider
 import { AuthProvider } from "./providers/AuthProvider";
 import { UserProvider } from "./providers/UserProvider";
+import { TermsProvider } from "./providers/TermsProvider";
+import { VehicleProider } from "./providers/VehicleProvider";
 
 //External Libs
 import { Route, Redirect, Switch } from "react-router-dom";
@@ -34,56 +36,60 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const token = localStorage.getItem("uid");
 
-  useEffect(()=> {
+  useEffect(() => {
     if (token) {
-      setIsLogin(true)
+      setIsLogin(true);
     }
-  }, token)
+  }, [token]);
   return (
     <div className="App">
-      <AppContainer isLogin={isLogin}>
-        <SidemenuWrapper>
-          <Sidemenu isLogin={isLogin} />
-        </SidemenuWrapper>
-        {isLogin && (
-          <HeaderWrapper>
-            <Header setIsLogin={setIsLogin} />
-          </HeaderWrapper>
-        )}
-        <AuthProvider>
-          <SettingUserContext setIsLogin={setIsLogin} />
-          <Switch>
-            <ContentWrapper isLogin={isLogin}>
-              <ProtectedRoute
-                path="/dashboard"
-                component={Dashboard}
-              ></ProtectedRoute>
-              <ProtectedRoute
-                path="/interval"
-                component={IntervalScreen}
-              ></ProtectedRoute>
-              <UserProvider>
+      <AuthProvider>
+        <VehicleProider>
+          <AppContainer isLogin={isLogin}>
+            <SidemenuWrapper>
+              <Sidemenu isLogin={isLogin} />
+            </SidemenuWrapper>
+            {isLogin && (
+              <HeaderWrapper>
+                <Header setIsLogin={setIsLogin} />
+              </HeaderWrapper>
+            )}
+            <SettingUserContext setIsLogin={setIsLogin} />
+            <Switch>
+              <ContentWrapper isLogin={isLogin}>
                 <ProtectedRoute
-                  path="/settings/user"
+                  path="/dashboard"
+                  component={Dashboard}
+                ></ProtectedRoute>
+                <ProtectedRoute
+                  path="/interval"
+                  component={IntervalScreen}
+                ></ProtectedRoute>
+                <UserProvider>
+                  <ProtectedRoute
+                    path="/settings/user"
+                    component={SettingsScreen}
+                  ></ProtectedRoute>
+                </UserProvider>
+                <ProtectedRoute
+                  path="/settings/language"
                   component={SettingsScreen}
                 ></ProtectedRoute>
-              </UserProvider>
-              <ProtectedRoute
-                path="/settings/language"
-                component={SettingsScreen}
-              ></ProtectedRoute>
-              <ProtectedRoute
-                path="/settings/terms"
-                component={SettingsScreen}
-              ></ProtectedRoute>
-              <Route path="/login">
-                <LoginScreen isLogin={isLogin} setIsLogin={setIsLogin} />
-              </Route>
-              {!token && <Redirect from="/" exact to="/login"></Redirect>}
-            </ContentWrapper>
-          </Switch>
-        </AuthProvider>
-      </AppContainer>
+                <TermsProvider>
+                  <ProtectedRoute
+                    path="/settings/terms"
+                    component={SettingsScreen}
+                  ></ProtectedRoute>
+                </TermsProvider>
+                <Route path="/login">
+                  <LoginScreen isLogin={isLogin} setIsLogin={setIsLogin} />
+                </Route>
+                {!token && <Redirect from="/" exact to="/login"></Redirect>}
+              </ContentWrapper>
+            </Switch>
+          </AppContainer>
+        </VehicleProider>
+      </AuthProvider>
     </div>
   );
 }
