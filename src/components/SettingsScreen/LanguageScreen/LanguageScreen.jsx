@@ -18,6 +18,7 @@ export const LanguageList = () => {
 
   useEffect(()=> {
     if (state && state.user) {
+      console.log(state.user)
       setSelectedLang(state.user.language);
     }
   },[state])
@@ -54,7 +55,7 @@ export const SelectedLang = () => {
     <ListContainer className="lang-list">
       <Button className="user-list-button" name={"Current Language"} />
       {selectedLang && <div className="usersListWrapper">
-        <p className="lang-name">{selectedLang}</p>
+        <p className="lang-name">{languages().getLanguageName(selectedLang)}</p>
       </div>}
     </ListContainer>
   );
