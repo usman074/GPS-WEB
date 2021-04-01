@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { List } from "antd";
 import {
   LanguageListContainer,
   ListContainer
 } from "../style";
 import { Button } from "../../common";
+import languages from 'language-list';
+import {useAuthContext} from '../../../providers/AuthProvider';
 
 export const LanguageList = () => {
-  const langList = [
-    "Bosnian",
-    "Croatian",
-    "standard",
-    "Serbian",
-    "Slovenian",
-    "German",
-    "Turkish",
-    "Hungarian",
-    "English",
-  ];
-  const [selectedLang, setSelectedLang] = useState("English");
+  console.log(languages().getData())
+  const langList = languages().getData()
+  const {state, dispatch} = useAuthContext();
+  const [selectedLang, setSelectedLang] = useState(null);
+  const changeLanguage = (code)=> {
+    console.log(code)
+  }
+
+  useEffect(()=> {
+    if (state && state.user) {
+      setSelectedLang(state.user.language);
+    }
+  },[state])
+
   return (
     <LanguageListContainer>
       <List
@@ -28,24 +32,31 @@ export const LanguageList = () => {
         bordered={false}
         split={false}
         renderItem={(item) => (
-          <List.Item className={`${selectedLang === item ? "selected" : ""}`}>
-            {item}
+          <List.Item className={`${selectedLang === item.code ? "selected" : ""}`} onClick={()=> setSelectedLang(item.code)}>
+            {item.language}
           </List.Item>
         )}
       />
-      <Button className="change-lang-button" name={"Save language"} />
+      <Button className="change-lang-button" name={"Save language"} onClick={()=> changeLanguage()} />
     </LanguageListContainer>
   );
 };
 
 export const SelectedLang = () => {
-  const [selectedLang, setSelectedLang] = useState("English");
+  const {state, dispatch} = useAuthContext();
+
+  const [selectedLang, setSelectedLang] = useState(null);
+  useEffect(()=> {
+    if (state && state.user) {
+      setSelectedLang(state.user.language);
+    }
+  },[state])
   return (
     <ListContainer className="lang-list">
       <Button className="user-list-button" name={"Current Language"} />
-      <div className="usersListWrapper">
+      {selectedLang && <div className="usersListWrapper">
         <p className="lang-name">{selectedLang}</p>
-      </div>
+      </div>}
     </ListContainer>
   );
 };

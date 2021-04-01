@@ -118,6 +118,11 @@ export const LanguageListContainer = styled.div`
   grid-area: middlePanel;
   padding: 6.4rem 6rem 0px 5rem;
 
+  .ant-list.ant-list-lg{
+    max-height: 270px;
+    overflow: auto;
+  }
+
   .ant-list-item {
     color: #6c6c6c;
     cursor: pointer;
