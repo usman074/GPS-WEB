@@ -8,6 +8,40 @@ export const IntervalContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 7rem 7rem;
     grid-gap: 1.5rem;
+
+    div {
+      margin-bottom: 0px !important;
+    }
+    .ant-input {
+      padding: 0px;
+      background: transparent;
+      color: #464646;
+      &::placeholder {
+        color: #6c6c6c !important;
+      }
+    }
+    .interval-input {
+      position: relative;
+      padding: 0.8rem;
+      background: #f8f8f8;
+      margin-bottom: 1rem !important;
+      border-radius: 1rem;
+      font-size: 1.3rem;
+      box-shadow: 1px 1px 1px 1px rgba(211, 194, 194, 0.25);
+      color: #464646;
+      text-align: left;
+
+      span {
+        position: absolute;
+        right: 0.5rem;
+        bottom: 0rem;
+      }
+    }
+
+    .error {
+      background: transparent;
+      box-shadow: none;
+    }
   }
 
   p {
@@ -20,6 +54,7 @@ export const IntervalContainer = styled.div`
     box-shadow: 1px 1px 1px 1px rgba(211, 194, 194, 0.25);
     color: #464646;
     text-align: left;
+    max-height: 4rem;
 
     sub {
       position: absolute;
@@ -63,5 +98,4 @@ export const IntervalContainer = styled.div`
       letter-spacing: 0.1rem;
     }
   }
-
 `;
