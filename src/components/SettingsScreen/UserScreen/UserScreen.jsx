@@ -131,6 +131,7 @@ export const CreateUser = () => {
             name="email"
             placeholder="hello@Sample.com"
             type="text"
+            disabled = {currentUser? true: false}
           />
 
           {!currentUser && (
@@ -185,7 +186,7 @@ export const UsersList = () => {
       const users = await getUsersList();
       console.log(users)
       dispatch({ type: "INITIALIZE_USERS", payload: users });
-    };
+    }
     callApi();
   }, []);
 
