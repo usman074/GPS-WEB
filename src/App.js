@@ -16,13 +16,11 @@ import { AuthProvider } from "./providers/AuthProvider";
 import { UserProvider } from "./providers/UserProvider";
 import { TermsProvider } from "./providers/TermsProvider";
 import { VehicleProider } from "./providers/VehicleProvider";
+import { IntervalProvider } from "./providers/IntervalProvider";
 
 //External Libs
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 
-//Configs
-
-import logo from "./logo.svg";
 import "./App.css";
 import "antd/dist/antd.css";
 import {
@@ -33,12 +31,15 @@ import {
 } from "./layoutStyle";
 
 function App() {
+  const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
-  const token = localStorage.getItem("uid");
+  const [token, setToken] = useState(localStorage.getItem("uid"))
 
   useEffect(() => {
     if (token) {
       setIsLogin(true);
+    } else {
+      history.replace('/login');
     }
   }, [token]);
   return (
@@ -51,7 +52,7 @@ function App() {
             </SidemenuWrapper>
             {isLogin && (
               <HeaderWrapper>
-                <Header setIsLogin={setIsLogin} />
+                <Header setIsLogin={setIsLogin} setToken={setToken} />
               </HeaderWrapper>
             )}
             <SettingUserContext setIsLogin={setIsLogin} />
@@ -61,10 +62,12 @@ function App() {
                   path="/dashboard"
                   component={Dashboard}
                 ></ProtectedRoute>
-                <ProtectedRoute
-                  path="/interval"
-                  component={IntervalScreen}
-                ></ProtectedRoute>
+                <IntervalProvider>
+                  <ProtectedRoute
+                    path="/interval"
+                    component={IntervalScreen}
+                  ></ProtectedRoute>
+                </IntervalProvider>
                 <UserProvider>
                   <ProtectedRoute
                     path="/settings/user"
