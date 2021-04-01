@@ -1,25 +1,36 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { DrawerStyled } from "./style";
 import { Button } from "../index";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useVehicleContext } from "../../../providers/VehicleProvider";
+import { firestore } from "../../../firebase";
+
 
 export const Sidemenu = ({ isLogin }) => {
-  const { state, dispatch } = useAuthContext();
+  const { state } = useAuthContext();
   const {
     state: vehicleState,
     dispatch: vehicleDispatch,
   } = useVehicleContext();
-  // const x = [
-  //   "Fm 113 / OW 652 Cs",
-  //   "Fm 113 / OW 652 Cs",
-  //   "Fm 113 / OW 652 Cs",
-  //   "Fm 113 / OW 652 Cs",
-  // ];
 
-  const onChangeVehicle = (vehcile)=> {
-    vehicleDispatch({type: 'UPDATE_SELECTED_VEHICLE', payload: vehcile});
-  }
+  useEffect(() => {
+    const getVehiclesCall = async () => {
+      await firestore
+        .collection(`vehicles`)
+        .where("adminId", "==", state.user.uid)
+        .onSnapshot((querySnapshot) => {
+          let vehiclesList = [];
+          querySnapshot.forEach((doc) => {
+            vehiclesList = [...vehiclesList, { ...doc.data(), uid: doc.id }];
+          });
+          vehicleDispatch({ type: "INITIALIZE_DATA", payload: vehiclesList });
+        });
+    };
+    if (state.user) getVehiclesCall();
+  }, [state]);
+  const onChangeVehicle = (vehcile) => {
+    vehicleDispatch({ type: "UPDATE_SELECTED_VEHICLE", payload: vehcile });
+  };
 
   return (
     <DrawerStyled
@@ -54,12 +65,10 @@ export const Sidemenu = ({ isLogin }) => {
               : ""
           }`}
           name={vehicle.vehicleName}
-          clickEvent={()=> onChangeVehicle(vehicle)}
+          clickEvent={() => onChangeVehicle(vehicle)}
         />
       ))}
-      {/* //   <p>Some contents...</p>
-    //   <p>Some contents...</p>
-    //   <p>Some contents...</p> */}
+     
     </DrawerStyled>
   );
 };
