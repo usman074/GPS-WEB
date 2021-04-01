@@ -1,42 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TermsContentWrapper } from "../style";
 import { Button } from "../../common";
 import { Input } from "antd";
+import { useTermsContext } from "../../../providers/TermsProvider";
+import { getTermsDocument, updateTermsDocument } from "../../../firebase";
 
 export const TermsScreen = () => {
   const { TextArea } = Input;
+  const { state, dispatch } = useTermsContext();
   const [isEdit, setIsEdit] = useState(false);
+  const [editedTerms, setEditedTerms] = useState("");
+
+  
+  useEffect(() => {
+    const initializeTerms = async () => {
+      const { termsConditions } = await getTermsDocument();
+      // console.log('terms', terms)
+      dispatch({ type: "INITIALIZE_TERMS", payload: termsConditions });
+    };
+    initializeTerms();
+  }, []);
+
+  const onTermsChange = (e) => {
+    console.log(e);
+    setEditedTerms(e.target.value);
+  };
+
+  const onTermsSubmit = async () => {
+    if (!isEdit) {
+      setIsEdit(!isEdit);
+    } else {
+      console.log(editedTerms);
+      const update = await updateTermsDocument(editedTerms);
+      dispatch({ type: "INITIALIZE_TERMS", payload: editedTerms });
+      setIsEdit(!isEdit);
+    }
+  };
+
   return (
     <TermsContentWrapper>
       {!isEdit && (
-        <p>
-          A Terms and Conditions agreement (T&C) outlines and sets forth your
-          rules and requirements for people who use your website or mobile app.
-          <br />
-          <br />
-          Topics addressed in a T&C include such things as acceptable behavior
-          by users, restricted uses of your service and the maintenance of your
-          rights, such as the right to terminate access to people who violate
-          your rules. Users must agree to your Terms and Conditions for them to
-          be enforceable.
-          <br />
-          <br />
-          Terms and Conditions agreements are also known as Terms of Service or
-          Terms of Use agreements. The name doesn't matter, as they all serve
-          the same purpose: Protecting your business and keeping your users
-          informed.
-        </p>
+        <p>{state.terms ? state.terms : "No Terms & Conditions"}</p>
       )}
 
       {isEdit && (
         <div className="terms-input">
-          <TextArea rows={10} placeholder="Write a Text..." />
+          <TextArea
+            rows={10}
+            placeholder="Write a Text..."
+            defaultValue={state.terms}
+            onChange={onTermsChange}
+          />
         </div>
       )}
       <Button
         className="edit-terms-button"
         name={isEdit ? "Update" : "Edit"}
-        clickEvent={() => setIsEdit(!isEdit)}
+        clickEvent={() => onTermsSubmit()}
       />
     </TermsContentWrapper>
   );
