@@ -26,7 +26,6 @@ export const SettingsScreen = () => {
       rightComp: null
     }
   }
-  console.log(pathname)
   return (
     <ContentWrapper>
       <SettingsLeftPanel gridArea="leftPanel" />

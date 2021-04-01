@@ -32,7 +32,6 @@ function userReducer(state = initialState, action) {
         ...state,
         currentUser: null,
         users: state.users.map((user) => {
-          console.log(user)
           if (user.uid === action.uid) {
             return { ...user, ...action.payload };
           }

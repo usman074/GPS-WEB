@@ -54,7 +54,6 @@ export const CreateUser = () => {
   const handleCreateUserForm = async (values, actions) => {
     try {
       if (currentUser) {
-        console.log(currentUser)
         const editedData = {
           name: values.name,
           email: values.email,
@@ -66,7 +65,6 @@ export const CreateUser = () => {
           ...editedData,
           uid: currentUser.uid
         });
-        console.log(userDoc)
         if (userDoc) {
           dispatch({ type: "EDIT_USER", payload: editedData, uid: currentUser.uid });
         }
@@ -86,7 +84,6 @@ export const CreateUser = () => {
       }
       actions.resetForm();
     } catch (error) {
-      console.log("error", error);
     }
   };
 
@@ -168,7 +165,6 @@ export const CreateUser = () => {
 export const UsersList = () => {
   const { state, dispatch } = useUserContext();
   const { users: usersList } = state;
-  console.log("update", usersList)
 
   const [uid, setUid] = useState(null);
   const {
@@ -184,7 +180,6 @@ export const UsersList = () => {
   useEffect(() => {
     const callApi = async () => {
       const users = await getUsersList();
-      console.log(users)
       dispatch({ type: "INITIALIZE_USERS", payload: users });
     }
     callApi();
