@@ -46,12 +46,10 @@ export const updateUserDocument = async (user) => {
     const userData = await userRef.update({
       ...user,
     });
-    console.log(userData);
     return true;
   } catch (error) {
     console.error("Error updating user document", error);
   }
-  // return getUserDocument(user.uid);
 };
 
 export const getUserDocument = async (uid) => {
@@ -89,18 +87,31 @@ export const delUserDocument = async (uid) => {
 
   try {
     const docDel = await firebase.auth.uid; //firestore.document(firestore.getInstance.uid).delete();
-    console.log(docDel);
-    // retÎurn true;
   } catch (error) {
     console.error("Error deleting user document", error);
   }
-  // return getUserDocument(user.uid);
 };
 
-export const getTermsDocument = async () => {
+export const generateTermsDocument = async () => {
+  const termsRef = firestore.doc(`terms/123456789`);
+  const snapshot = await termsRef.get();
+
+  if (!snapshot.exists) {
+    try {
+      await termsRef.set({
+        termsConditions: ''          
+      });
+    } catch (error) {
+      console.error("Error creating terms document", error);
+    }
+  }
+  return getTermsDocument("123456789");
+};
+
+export const getTermsDocument = async (id) => {
   try {
     const termsDocument = await firestore
-      .doc(`terms/GUeiriZTkVt5BFbOJE9p`)
+      .doc(`terms/${id}`)
       .get();
     return {
       ...termsDocument.data(),
@@ -111,15 +122,73 @@ export const getTermsDocument = async () => {
 };
 
 export const updateTermsDocument = async (terms) => {
-  const termsRef = firestore.doc(`terms/GUeiriZTkVt5BFbOJE9p`);
+  const termsRef = firestore.doc(`terms/123456789`);
 
   try {
     const termsData = await termsRef.update({
       termsConditions: terms,
     });
-    console.log(termsData);
-    return true;
+    return getTermsDocument('123456789');
   } catch (error) {
     console.error("Error updating terms document", error);
+  }
+};
+
+export const generateIntervalDocument = async () => {
+  const intervalRef = firestore.doc(`interval/123456789`);
+  const snapshot = await intervalRef.get();
+
+  if (!snapshot.exists) {
+    try {
+
+      await intervalRef.set({
+          refreshInterval: {
+            value: "",
+            type: ""
+          },
+          mapInterval: {
+            start: "",
+            end: "",
+          },
+          gpsInterval: {
+            value: "",
+            type: ""
+          },
+          webpageInterval: {
+            value: "",
+            type: ""
+          },
+      });
+    } catch (error) {
+      console.error("Error creating interval document", error);
+    }
+  }
+  return getIntervalDocument("123456789");
+};
+
+export const getIntervalDocument = async (uid) => {
+  if (!uid) return null;
+  try {
+    const intervalDocument = await firestore.doc(`interval/${uid}`).get();
+    return {
+      ...intervalDocument.data(),
+    };
+  } catch (error) {
+    console.error("Error fetching interval", error);
+  }
+};
+
+export const updateIntervalDocument = async (interval) => {
+  if (!interval) return;
+
+  const intervalRef = firestore.doc(`interval/123456789`);
+
+  try {
+    await intervalRef.update({
+      ...interval,
+    });
+    return getIntervalDocument('123456789');
+  } catch (error) {
+    console.error("Error updating interval document", error);
   }
 };
