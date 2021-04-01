@@ -9,7 +9,6 @@ import languages from 'language-list';
 import {useAuthContext} from '../../../providers/AuthProvider';
 
 export const LanguageList = () => {
-  console.log(languages().getData())
   const langList = languages().getData()
   const {state, dispatch} = useAuthContext();
   const [selectedLang, setSelectedLang] = useState(null);
