@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useVehicleContext } from "../../providers/VehicleProvider";
 import { useAuthContext } from "../../providers/AuthProvider";
-import { firestore } from "../../firebase";
 import GoogleMapReact from 'google-map-react';
 import {MarkerIcon} from '../../assets/index';
 import {CarNameStyled} from './style';
@@ -16,8 +15,7 @@ const AnyReactComponent = ({ text }) => {
 }
 
 export const Dashboard = () => {
-  const { state, dispatch } = useVehicleContext();
-  const { state: authState } = useAuthContext();
+  const { state } = useVehicleContext();
 
 
 // const loadStaticMap = ()=> {
@@ -31,21 +29,7 @@ export const Dashboard = () => {
 //   }
 // }
 
-  useEffect(() => {
-    const getVehiclesCall = async () => {
-      await firestore
-        .collection(`vehicles`)
-        .where("adminId", "==", authState.user.uid)
-        .onSnapshot((querySnapshot) => {
-          let vehiclesList = [];
-          querySnapshot.forEach((doc) => {
-            vehiclesList = [...vehiclesList, { ...doc.data(), uid: doc.id }];
-          });
-          dispatch({ type: "INITIALIZE_DATA", payload: vehiclesList });
-        });
-    };
-    if (authState.user) getVehiclesCall();
-  }, [authState]);
+
   return (
     <div style={{ height: '100vh', width: '100%' }}>
         {state.selectedVehicle && <GoogleMapReact
