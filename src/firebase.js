@@ -16,7 +16,6 @@ const app = firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore(app);
 
-
 export const generateUserDocument = async (user, additionalData) => {
   if (!user) return;
 
@@ -43,16 +42,15 @@ export const updateUserDocument = async (user) => {
   const userRef = firestore.doc(`users/${user.uid}`);
 
   delete user.uid;
-    try {
-      const userData = await userRef.update({
-        ...user
-      });
-      console.log(userData)
+  try {
+    const userData = await userRef.update({
+      ...user,
+    });
+    console.log(userData);
     return true;
-
-    } catch (error) {
-      console.error("Error updating user document", error);
-    }
+  } catch (error) {
+    console.error("Error updating user document", error);
+  }
   // return getUserDocument(user.uid);
 };
 
@@ -71,11 +69,14 @@ export const getUserDocument = async (uid) => {
 
 export const getUsersList = async () => {
   try {
-    const usersListApiCall = await firestore.collection(`users`).where('isAdmin', '==', false).get();
+    const usersListApiCall = await firestore
+      .collection(`users`)
+      .where("isAdmin", "==", false)
+      .get();
 
     let usersList = [];
     usersListApiCall.forEach((user) => {
-      usersList = [...usersList, {...user.data(), uid: user.id}];
+      usersList = [...usersList, { ...user.data(), uid: user.id }];
     });
     return usersList;
   } catch (error) {
@@ -86,14 +87,39 @@ export const getUsersList = async () => {
 export const delUserDocument = async (uid) => {
   if (!uid) return;
 
-  
-    try {
-      const docDel = await firestore.document(firestore.FirebaseAuth.getInstance().uid).delete();
-  console.log(docDel)
+  try {
+    const docDel = await firebase.auth.uid; //firestore.document(firestore.getInstance.uid).delete();
+    console.log(docDel);
     // retÎurn true;
-
-    } catch (error) {
-      console.error("Error deleting user document", error);
-    }
+  } catch (error) {
+    console.error("Error deleting user document", error);
+  }
   // return getUserDocument(user.uid);
+};
+
+export const getTermsDocument = async () => {
+  try {
+    const termsDocument = await firestore
+      .doc(`terms/GUeiriZTkVt5BFbOJE9p`)
+      .get();
+    return {
+      ...termsDocument.data(),
+    };
+  } catch (error) {
+    console.error("Error fetching terms", error);
+  }
+};
+
+export const updateTermsDocument = async (terms) => {
+  const termsRef = firestore.doc(`terms/GUeiriZTkVt5BFbOJE9p`);
+
+  try {
+    const termsData = await termsRef.update({
+      termsConditions: terms,
+    });
+    console.log(termsData);
+    return true;
+  } catch (error) {
+    console.error("Error updating terms document", error);
+  }
 };
