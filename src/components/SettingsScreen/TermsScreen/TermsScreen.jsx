@@ -3,7 +3,7 @@ import { TermsContentWrapper } from "../style";
 import { Button } from "../../common";
 import { Input } from "antd";
 import { useTermsContext } from "../../../providers/TermsProvider";
-import { getTermsDocument, updateTermsDocument } from "../../../firebase";
+import { generateTermsDocument, getTermsDocument, updateTermsDocument } from "../../../firebase";
 
 export const TermsScreen = () => {
   const { TextArea } = Input;
@@ -14,15 +14,13 @@ export const TermsScreen = () => {
   
   useEffect(() => {
     const initializeTerms = async () => {
-      const { termsConditions } = await getTermsDocument();
-      // console.log('terms', terms)
+      const { termsConditions } = await generateTermsDocument();
       dispatch({ type: "INITIALIZE_TERMS", payload: termsConditions });
     };
     initializeTerms();
   }, []);
 
   const onTermsChange = (e) => {
-    console.log(e);
     setEditedTerms(e.target.value);
   };
 
@@ -30,9 +28,8 @@ export const TermsScreen = () => {
     if (!isEdit) {
       setIsEdit(!isEdit);
     } else {
-      console.log(editedTerms);
       const update = await updateTermsDocument(editedTerms);
-      dispatch({ type: "INITIALIZE_TERMS", payload: editedTerms });
+      dispatch({ type: "UPDATE_TERMS", payload: editedTerms });
       setIsEdit(!isEdit);
     }
   };
