@@ -30,5 +30,10 @@ export const DrawerStyled = styled(Drawer)`
     max-height: 3.3rem;
     border-radius: 1rem;
   }
+
+  .selected-vehicle {
+    background-color: #464646;
+    color: #ffffff;
+  }
 `;
 

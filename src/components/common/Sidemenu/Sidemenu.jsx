@@ -1,18 +1,29 @@
 import React from "react";
 import { DrawerStyled } from "./style";
 import { Button } from "../index";
+import { useAuthContext } from "../../../providers/AuthProvider";
+import { useVehicleContext } from "../../../providers/VehicleProvider";
 
-export const Sidemenu = ({isLogin}) => {
-  const x = [
-    "Fm 113 / OW 652 Cs",
-    "Fm 113 / OW 652 Cs",
-    "Fm 113 / OW 652 Cs",
-    "Fm 113 / OW 652 Cs",
-  ];
-  const vehicles = [...x, ...x, ...x, ...x, ...x]
+export const Sidemenu = ({ isLogin }) => {
+  const { state, dispatch } = useAuthContext();
+  const {
+    state: vehicleState,
+    dispatch: vehicleDispatch,
+  } = useVehicleContext();
+  // const x = [
+  //   "Fm 113 / OW 652 Cs",
+  //   "Fm 113 / OW 652 Cs",
+  //   "Fm 113 / OW 652 Cs",
+  //   "Fm 113 / OW 652 Cs",
+  // ];
+
+  const onChangeVehicle = (vehcile)=> {
+    vehicleDispatch({type: 'UPDATE_SELECTED_VEHICLE', payload: vehcile});
+  }
+
   return (
     <DrawerStyled
-      title="WEB GPS"
+      title={"GPS WEB"}
       placement="left"
       closable={false}
       visible={isLogin}
@@ -34,8 +45,17 @@ export const Sidemenu = ({isLogin}) => {
       }}
     >
       <Button className="sidemenu-content-heading" name="Mobile location" />
-      {vehicles.map((vehicle, index) => (
-        <Button key={index} className="vehicles" name={vehicle} />
+      {vehicleState.vehicles.map((vehicle) => (
+        <Button
+          key={vehicle.uid}
+          className={`vehicles ${
+            vehicle.uid === vehicleState.selectedVehicle.uid
+              ? "selected-vehicle"
+              : ""
+          }`}
+          name={vehicle.vehicleName}
+          clickEvent={()=> onChangeVehicle(vehicle)}
+        />
       ))}
       {/* //   <p>Some contents...</p>
     //   <p>Some contents...</p>
