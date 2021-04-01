@@ -18,6 +18,8 @@ export const vehicleReducer = (state = initialState, action) => {
         ...state,
         selectedVehicle: action.payload,
       };
+    default:
+      return state;
   }
 };
 
