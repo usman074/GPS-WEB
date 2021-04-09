@@ -27,7 +27,7 @@ export const generateUserDocument = async (user, additionalData) => {
     try {
       await userRef.set({
         email,
-        language: 'en',
+        // language: 'en',
         ...additionalData,
       });
     } catch (error) {
@@ -80,16 +80,6 @@ export const getUsersList = async () => {
     return usersList;
   } catch (error) {
     console.error("Error fetching users list", error);
-  }
-};
-
-export const delUserDocument = async (uid) => {
-  if (!uid) return;
-
-  try {
-    const docDel = await firebase.auth.uid; //firestore.document(firestore.getInstance.uid).delete();
-  } catch (error) {
-    console.error("Error deleting user document", error);
   }
 };
 
@@ -191,5 +181,18 @@ export const updateIntervalDocument = async (interval) => {
     return getIntervalDocument('123456789');
   } catch (error) {
     console.error("Error updating interval document", error);
+  }
+};
+
+export const delUserVehicleDocument = async (uid) => {
+  if (!uid) return;
+
+  const userVehicleDocRef = firestore.doc(`vehicles/${uid}`);
+
+  try {
+    await userVehicleDocRef.delete();
+    return true;
+  } catch (error) {
+    console.error("Error deleting user vehicle document", error);
   }
 };

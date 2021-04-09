@@ -11,7 +11,8 @@ import {
   generateUserDocument,
   getUsersList,
   updateUserDocument,
-  delUserDocument
+  getUserDocument,
+  delUserVehicleDocument
 } from "../../../firebase";
 import { useUserContext } from "../../../providers/UserProvider";
 import { useAuthContext } from "../../../providers/AuthProvider";
@@ -79,6 +80,7 @@ export const CreateUser = () => {
           username: values.username,
           isAdmin: false,
           adminId: uid,
+          isActive: true
         });
         dispatch({ type: "ADD_USER", payload: userDoc });
       }
@@ -179,14 +181,21 @@ export const UsersList = () => {
 
   useEffect(() => {
     const callApi = async () => {
-      const users = await getUsersList();
+      let users = await getUsersList();
+      console.log(users)
+      users = users.filter(user=> user.isActive)
       dispatch({ type: "INITIALIZE_USERS", payload: users });
     }
     callApi();
   }, []);
 
-  const handleDelUser = (uid)=> {
-    delUserDocument(uid);
+  const handleDelUser = async (uid)=> {
+    console.log(uid)
+    const userDoc = await getUserDocument(uid)
+    console.log('userDoc', userDoc);
+    await updateUserDocument({...userDoc, isActive: false});
+    await delUserVehicleDocument(userDoc.uid)
+    dispatch({ type: "DEL_USER", uid: userDoc.uid });
   }
 
   return (
@@ -221,7 +230,7 @@ export const UsersList = () => {
                     borderRadius: "0.5rem",
                     padding: "0.3rem",
                   }}
-                  onClick={()=> handleDelUser(user.uid)}
+                  onClick={()=> handleDelUser(users.uid)}
                 />
               </div>
             </div>
