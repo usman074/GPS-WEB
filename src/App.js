@@ -33,13 +33,13 @@ import {
 function App() {
   const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("uid"))
+  const [token, setToken] = useState(localStorage.getItem("uid"));
 
   useEffect(() => {
     if (token) {
       setIsLogin(true);
     } else {
-      history.replace('/login');
+      history.replace("/login");
     }
   }, [token]);
   return (
@@ -70,6 +70,12 @@ function App() {
                 </IntervalProvider>
                 <UserProvider>
                   <ProtectedRoute
+                    exact
+                    path="/settings/user/edit"
+                    component={SettingsScreen}
+                  ></ProtectedRoute>
+                  <ProtectedRoute
+                    exact
                     path="/settings/user"
                     component={SettingsScreen}
                   ></ProtectedRoute>
@@ -80,6 +86,12 @@ function App() {
                 ></ProtectedRoute>
                 <TermsProvider>
                   <ProtectedRoute
+                    exact
+                    path="/settings/terms/edit"
+                    component={SettingsScreen}
+                  ></ProtectedRoute>
+                  <ProtectedRoute
+                    exact
                     path="/settings/terms"
                     component={SettingsScreen}
                   ></ProtectedRoute>

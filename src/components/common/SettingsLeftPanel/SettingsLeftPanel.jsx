@@ -12,9 +12,9 @@ export const SettingsLeftPanel = ({gridArea}) => {
 
   return (
     <ContentWrapper gridArea={gridArea}>
-      <Button name="Create User" className={`settings-buttons ${pathname === '/settings/user'? 'active': ''}`} clickEvent={()=> history.replace('/settings/user')} />
+      <Button name="Create User" className={`settings-buttons ${(pathname === '/settings/user' || pathname === '/settings/user/edit')? 'active': ''}`} clickEvent={()=> history.replace('/settings/user')} />
       <Button name="Change Language" className={`settings-buttons ${pathname === '/settings/language'? 'active': ''}`} clickEvent={()=> history.replace('/settings/language')} />
-      <Button name="Update Term & Condition" className={`settings-buttons ${pathname === '/settings/terms'? 'active': ''}`} clickEvent={()=> history.replace('/settings/terms')} />
+      <Button name="Update Term & Condition" className={`settings-buttons ${(pathname === '/settings/terms' || pathname === '/settings/terms/edit')? 'active': ''}`} clickEvent={()=> history.replace('/settings/terms')} />
     </ContentWrapper>
   );
 };

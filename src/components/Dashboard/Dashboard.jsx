@@ -9,7 +9,7 @@ const AnyReactComponent = ({ text }) => {
   return (
     <div>
       <MarkerIcon/>
-      <CarNameStyled>{text}</CarNameStyled>
+      {text && <CarNameStyled>{text}</CarNameStyled>}
     </div>
   )
 }
@@ -29,20 +29,20 @@ export const Dashboard = () => {
 //   }
 // }
 
-
+  console.log(state)
   return (
     <div style={{ height: '100vh', width: '100%' }}>
-        {state.selectedVehicle && <GoogleMapReact
+        <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyCQkNEL5ocv5x_TfGqgXW-olHr0yeA0N0Q' }}
-          defaultCenter={{lat: state.selectedVehicle.lat, lng: state.selectedVehicle.lng}}
+          defaultCenter={{lat: state.selectedVehicle? state.selectedVehicle.lat: 30.7438368, lng: state.selectedVehicle? state.selectedVehicle.lng: 73.3308934}}
           defaultZoom={11}
         >
           <AnyReactComponent
-            lat={state.selectedVehicle.lat}
-            lng={state.selectedVehicle.lng}
-            text={state.selectedVehicle.vehicleName}
+            lat={state.selectedVehicle? state.selectedVehicle.lat: 30.7438368}
+            lng={state.selectedVehicle? state.selectedVehicle.lng: 73.3308934}
+            text={state.selectedVehicle && state.selectedVehicle.vehicleName}
           />
-        </GoogleMapReact>}
+        </GoogleMapReact>
       </div>
   )
 };

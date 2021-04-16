@@ -17,11 +17,19 @@ export const SettingsScreen = () => {
       middleComp: <CreateUser />,
       rightComp: <UsersList />
     },
+    '/settings/user/edit': {
+      middleComp: <CreateUser />,
+      rightComp: <UsersList />
+    },
     '/settings/language': {
       middleComp: <LanguageList />,
       rightComp: <SelectedLang />
     },
     '/settings/terms': {
+      middleComp: <TermsScreen />,
+      rightComp: null
+    },
+    '/settings/terms/edit': {
       middleComp: <TermsScreen />,
       rightComp: null
     }

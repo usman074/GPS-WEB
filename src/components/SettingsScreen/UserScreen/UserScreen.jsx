@@ -12,10 +12,12 @@ import {
   getUsersList,
   updateUserDocument,
   getUserDocument,
-  delUserVehicleDocument
+  delUserVehicleDocument,
 } from "../../../firebase";
 import { useUserContext } from "../../../providers/UserProvider";
 import { useAuthContext } from "../../../providers/AuthProvider";
+import { useHistory, useLocation } from "react-router-dom";
+
 
 export const CreateUser = () => {
   const { state, dispatch } = useUserContext();
@@ -24,6 +26,19 @@ export const CreateUser = () => {
   } = useAuthContext();
   const [uid, setUid] = useState(null);
   const { currentUser } = state;
+
+  const location = useLocation();
+  const {pathname} = location;
+  const history = useHistory();
+
+
+  useEffect(()=> {
+    if (pathname.includes('edit') && !currentUser) {
+      history.replace('/dashboard')
+    } else if(pathname==="/settings/user" && currentUser) {
+      dispatch({ type: "CURRENT_USER", uid: null });
+    }
+  }, [pathname])
 
   useEffect(() => {
     if (user) {
@@ -61,15 +76,18 @@ export const CreateUser = () => {
           username: values.username,
           isAdmin: false,
           adminId: uid,
-        }
+        };
         const userDoc = await updateUserDocument({
           ...editedData,
-          uid: currentUser.uid
+          uid: currentUser.uid,
         });
         if (userDoc) {
-          dispatch({ type: "EDIT_USER", payload: editedData, uid: currentUser.uid });
+          dispatch({
+            type: "EDIT_USER",
+            payload: editedData,
+            uid: currentUser.uid,
+          });
         }
-
       } else {
         const { user } = await auth.createUserWithEmailAndPassword(
           values.email,
@@ -80,13 +98,12 @@ export const CreateUser = () => {
           username: values.username,
           isAdmin: false,
           adminId: uid,
-          isActive: true
+          isActive: true,
         });
         dispatch({ type: "ADD_USER", payload: userDoc });
       }
       actions.resetForm();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
@@ -130,7 +147,7 @@ export const CreateUser = () => {
             name="email"
             placeholder="hello@Sample.com"
             type="text"
-            disabled = {currentUser? true: false}
+            disabled={currentUser ? true : false}
           />
 
           {!currentUser && (
@@ -156,7 +173,7 @@ export const CreateUser = () => {
           <Button
             className="create-user-button"
             type="submit"
-            name={currentUser? "Update": "Create"}
+            name={currentUser ? "Update" : "Create"}
           />
         </Form>
       </Formik>
@@ -165,6 +182,7 @@ export const CreateUser = () => {
 };
 
 export const UsersList = () => {
+  const history = useHistory();
   const { state, dispatch } = useUserContext();
   const { users: usersList } = state;
 
@@ -182,21 +200,18 @@ export const UsersList = () => {
   useEffect(() => {
     const callApi = async () => {
       let users = await getUsersList();
-      console.log(users)
-      users = users.filter(user=> user.isActive)
+      users = users.filter((user) => user.isActive);
       dispatch({ type: "INITIALIZE_USERS", payload: users });
-    }
+    };
     callApi();
   }, []);
 
-  const handleDelUser = async (uid)=> {
-    console.log(uid)
-    const userDoc = await getUserDocument(uid)
-    console.log('userDoc', userDoc);
-    await updateUserDocument({...userDoc, isActive: false});
-    await delUserVehicleDocument(userDoc.uid)
+  const handleDelUser = async (uid) => {
+    const userDoc = await getUserDocument(uid);
+    await updateUserDocument({ ...userDoc, isActive: false });
+    await delUserVehicleDocument(userDoc.uid);
     dispatch({ type: "DEL_USER", uid: userDoc.uid });
-  }
+  };
 
   return (
     <ListContainer>
@@ -219,9 +234,10 @@ export const UsersList = () => {
                     marginRight: "0.3rem",
                     fontSize: "2.2rem",
                   }}
-                  onClick={() =>
-                    dispatch({ type: "CURRENT_USER", uid: users.uid })
-                  }
+                  onClick={() => {
+                    dispatch({ type: "CURRENT_USER", uid: users.uid });
+                    history.replace('/settings/user/edit')
+                  }}
                 />
                 <DeleteOutlined
                   style={{
@@ -230,7 +246,7 @@ export const UsersList = () => {
                     borderRadius: "0.5rem",
                     padding: "0.3rem",
                   }}
-                  onClick={()=> handleDelUser(users.uid)}
+                  onClick={() => handleDelUser(users.uid)}
                 />
               </div>
             </div>

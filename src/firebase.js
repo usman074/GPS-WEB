@@ -34,6 +34,7 @@ export const generateUserDocument = async (user, additionalData) => {
       console.error("Error creating user document", error);
     }
   }
+  generateIntervalDocument();
   return getUserDocument(user.uid);
 };
 
@@ -134,27 +135,19 @@ export const generateIntervalDocument = async () => {
 
       await intervalRef.set({
           refreshInterval: {
-            value: "",
-            type: ""
-          },
-          mapInterval: {
-            start: "",
-            end: "",
+            value: "5",
+            type: "min"
           },
           gpsInterval: {
-            value: "",
-            type: ""
-          },
-          webpageInterval: {
-            value: "",
-            type: ""
-          },
+            value: "5",
+            type: "min"
+          }
       });
     } catch (error) {
       console.error("Error creating interval document", error);
     }
   }
-  return getIntervalDocument("123456789");
+  // return getIntervalDocument("123456789");
 };
 
 export const getIntervalDocument = async (uid) => {

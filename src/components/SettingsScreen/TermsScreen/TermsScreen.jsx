@@ -4,6 +4,7 @@ import { Button } from "../../common";
 import { Input } from "antd";
 import { useTermsContext } from "../../../providers/TermsProvider";
 import { generateTermsDocument, getTermsDocument, updateTermsDocument } from "../../../firebase";
+import { useHistory, useLocation } from "react-router-dom";
 
 export const TermsScreen = () => {
   const { TextArea } = Input;
@@ -11,14 +12,29 @@ export const TermsScreen = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editedTerms, setEditedTerms] = useState("");
 
+  const location = useLocation();
+  const {pathname} = location;
+  const history = useHistory();
+
   
   useEffect(() => {
     const initializeTerms = async () => {
       const { termsConditions } = await generateTermsDocument();
       dispatch({ type: "INITIALIZE_TERMS", payload: termsConditions });
+      if (isEdit) {
+        
+      }
     };
     initializeTerms();
   }, []);
+
+  useEffect(()=> {
+    if(pathname.includes('edit')) {
+      setIsEdit(!isEdit);
+      setEditedTerms(state.terms)
+    } 
+  },[pathname])
+
 
   const onTermsChange = (e) => {
     setEditedTerms(e.target.value);
@@ -26,11 +42,14 @@ export const TermsScreen = () => {
 
   const onTermsSubmit = async () => {
     if (!isEdit) {
-      setIsEdit(!isEdit);
+      // setIsEdit(!isEdit);
+      history.replace('/settings/terms/edit')
     } else {
       const update = await updateTermsDocument(editedTerms);
       dispatch({ type: "UPDATE_TERMS", payload: editedTerms });
-      setIsEdit(!isEdit);
+      // setIsEdit(!isEdit);
+      history.replace('/settings/terms')
+
     }
   };
 
