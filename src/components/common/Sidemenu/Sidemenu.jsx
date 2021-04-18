@@ -59,6 +59,7 @@ export const Sidemenu = ({ isLogin }) => {
 
   const onChangeVehicle = (vehcile) => {
     vehicleDispatch({ type: "UPDATE_SELECTED_VEHICLE", payload: vehcile });
+    console.log('usman here 2')
 
     history.replace('/dashboard');
   };
@@ -107,7 +108,7 @@ export const Sidemenu = ({ isLogin }) => {
               : ""
           }`}
           name={vehicle.vehicleName}
-          // clickEvent={() => onChangeVehicle(vehicle)}
+          clickEvent={() => onChangeVehicle(vehicle)}
         />
       ))}
      

@@ -144,7 +144,6 @@ export const IntervalScreen = () => {
             <Input
               className="interval-input"
               name="refreshInterval.value"
-              placeholder="0"
               type="text"
             />
             {dropdown("dropdownOne")}
@@ -156,7 +155,6 @@ export const IntervalScreen = () => {
             <Input
               className="interval-input"
               name="gpsInterval.value"
-              placeholder="0"
               type="text"
             />
             {dropdown("dropdownTwo")}

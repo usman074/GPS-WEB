@@ -48,9 +48,11 @@ function App() {
       <AuthProvider>
         <VehicleProider>
           <AppContainer isLogin={isLogin}>
-            <SidemenuWrapper>
-              <Sidemenu isLogin={isLogin} />
-            </SidemenuWrapper>
+            {isLogin && (
+              <SidemenuWrapper>
+                <Sidemenu isLogin={isLogin} />
+              </SidemenuWrapper>
+            )}
             {isLogin && (
               <HeaderWrapper>
                 <Header setIsLogin={setIsLogin} setToken={setToken} />

@@ -66,13 +66,12 @@ export const LoginScreen = (props) => {
             <h1 className="form-heading">Sign In</h1>
 
             <p className="label">Email</p>
-            <Input name="email" placeholder="hello@Sample.com" type="text" />
+            <Input name="email" type="text" />
 
             <p className="label">Password</p>
             <Input
               name="password"
               type="password"
-              placeholder="Enter Password"
             />
 
             <Button className="login-button" type="submit" name={"Sign In"} />
