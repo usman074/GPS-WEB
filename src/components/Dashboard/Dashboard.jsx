@@ -34,7 +34,7 @@ export const Dashboard = () => {
     <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyCQkNEL5ocv5x_TfGqgXW-olHr0yeA0N0Q' }}
-          defaultCenter={{lat: state.selectedVehicle? state.selectedVehicle.lat: 30.7438368, lng: state.selectedVehicle? state.selectedVehicle.lng: 73.3308934}}
+          center={{lat: state.selectedVehicle? state.selectedVehicle.lat: 30.7438368, lng: state.selectedVehicle? state.selectedVehicle.lng: 73.3308934}}
           defaultZoom={11}
         >
           <AnyReactComponent

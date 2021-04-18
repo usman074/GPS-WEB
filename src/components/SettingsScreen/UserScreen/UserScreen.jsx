@@ -18,8 +18,7 @@ import { useUserContext } from "../../../providers/UserProvider";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useHistory, useLocation } from "react-router-dom";
 
-
-export const CreateUser = () => {
+export const CreateUser = ({ setIsLoading }) => {
   const { state, dispatch } = useUserContext();
   const {
     state: { user },
@@ -28,17 +27,16 @@ export const CreateUser = () => {
   const { currentUser } = state;
 
   const location = useLocation();
-  const {pathname} = location;
+  const { pathname } = location;
   const history = useHistory();
 
-
-  useEffect(()=> {
-    if (pathname.includes('edit') && !currentUser) {
-      history.replace('/dashboard')
-    } else if(pathname==="/settings/user" && currentUser) {
+  useEffect(() => {
+    if (pathname.includes("edit") && !currentUser) {
+      history.replace("/settings/user");
+    } else if (pathname === "/settings/user" && currentUser) {
       dispatch({ type: "CURRENT_USER", uid: null });
     }
-  }, [pathname])
+  }, [pathname]);
 
   useEffect(() => {
     if (user) {
@@ -77,6 +75,7 @@ export const CreateUser = () => {
           isAdmin: false,
           adminId: uid,
         };
+        setIsLoading(true);
         const userDoc = await updateUserDocument({
           ...editedData,
           uid: currentUser.uid,
@@ -87,12 +86,14 @@ export const CreateUser = () => {
             payload: editedData,
             uid: currentUser.uid,
           });
+          setIsLoading(false);
         }
       } else {
         const { user } = await auth.createUserWithEmailAndPassword(
           values.email,
           values.password
         );
+        setIsLoading(true);
         const userDoc = await generateUserDocument(user, {
           name: values.name,
           username: values.username,
@@ -101,6 +102,7 @@ export const CreateUser = () => {
           isActive: true,
         });
         dispatch({ type: "ADD_USER", payload: userDoc });
+        setIsLoading(false);
       }
       actions.resetForm();
     } catch (error) {}
@@ -129,7 +131,6 @@ export const CreateUser = () => {
           <Input
             className="create-user-input"
             name="name"
-            placeholder="Hello"
             type="text"
           />
 
@@ -137,7 +138,6 @@ export const CreateUser = () => {
           <Input
             className="create-user-input"
             name="username"
-            placeholder="hello@Sample.com"
             type="text"
           />
 
@@ -145,7 +145,6 @@ export const CreateUser = () => {
           <Input
             className="create-user-input"
             name="email"
-            placeholder="hello@Sample.com"
             type="text"
             disabled={currentUser ? true : false}
           />
@@ -157,7 +156,6 @@ export const CreateUser = () => {
                 className="create-user-input"
                 name="password"
                 type="password"
-                placeholder="********"
               />
 
               <p className="label">Confirm Password</p>
@@ -165,7 +163,6 @@ export const CreateUser = () => {
                 className="create-user-input"
                 name="confirmPassword"
                 type="password"
-                placeholder="********"
               />
             </>
           )}
@@ -181,7 +178,7 @@ export const CreateUser = () => {
   );
 };
 
-export const UsersList = () => {
+export const UsersList = ({ setIsLoading }) => {
   const history = useHistory();
   const { state, dispatch } = useUserContext();
   const { users: usersList } = state;
@@ -207,10 +204,12 @@ export const UsersList = () => {
   }, []);
 
   const handleDelUser = async (uid) => {
+    setIsLoading(true)
     const userDoc = await getUserDocument(uid);
     await updateUserDocument({ ...userDoc, isActive: false });
     await delUserVehicleDocument(userDoc.uid);
     dispatch({ type: "DEL_USER", uid: userDoc.uid });
+    setIsLoading(false)
   };
 
   return (
@@ -236,7 +235,7 @@ export const UsersList = () => {
                   }}
                   onClick={() => {
                     dispatch({ type: "CURRENT_USER", uid: users.uid });
-                    history.replace('/settings/user/edit')
+                    history.replace("/settings/user/edit");
                   }}
                 />
                 <DeleteOutlined

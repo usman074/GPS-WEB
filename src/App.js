@@ -23,6 +23,7 @@ import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 
 import "./App.css";
 import "antd/dist/antd.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
   AppContainer,
   HeaderWrapper,
@@ -59,11 +60,13 @@ function App() {
             <Switch>
               <ContentWrapper isLogin={isLogin}>
                 <ProtectedRoute
+                  exact
                   path="/dashboard"
                   component={Dashboard}
                 ></ProtectedRoute>
                 <IntervalProvider>
                   <ProtectedRoute
+                    exact
                     path="/interval"
                     component={IntervalScreen}
                   ></ProtectedRoute>
@@ -81,6 +84,7 @@ function App() {
                   ></ProtectedRoute>
                 </UserProvider>
                 <ProtectedRoute
+                  exact
                   path="/settings/language"
                   component={SettingsScreen}
                 ></ProtectedRoute>

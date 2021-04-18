@@ -6,8 +6,11 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useIntervalContext } from "../../providers/IntervalProvider";
 import { updateIntervalDocument, generateIntervalDocument, getIntervalDocument } from "../../firebase";
+import Loader from "react-loader-spinner";
 
 export const IntervalScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [showDropdown, setShowDropdown] = useState({
     dropdownOne: { open: false, text: "hours" },
     dropdownTwo: { open: false, text: "hours" },
@@ -85,8 +88,10 @@ export const IntervalScreen = () => {
         type: showDropdown.dropdownTwo.text,
       },
     };
+    setIsLoading(true)
     const intervalDoc = await updateIntervalDocument(updatedValues);
     dispatch({ type: "UPDATE_INTERVAL", payload: intervalDoc });
+    setIsLoading(false)
   };
 
   const validateSetIntervalForm = () => {
@@ -106,6 +111,15 @@ export const IntervalScreen = () => {
     });
   };
   return (
+    isLoading ? (
+      <Loader
+        type="Oval"
+        color="#464646"
+        height={100}
+        width={100}
+        visible={true}
+      />
+    ) :
     <Formik
       initialValues={
         state.interval

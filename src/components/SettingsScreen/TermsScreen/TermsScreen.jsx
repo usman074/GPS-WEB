@@ -6,7 +6,7 @@ import { useTermsContext } from "../../../providers/TermsProvider";
 import { generateTermsDocument, getTermsDocument, updateTermsDocument } from "../../../firebase";
 import { useHistory, useLocation } from "react-router-dom";
 
-export const TermsScreen = () => {
+export const TermsScreen = ({setIsLoading}) => {
   const { TextArea } = Input;
   const { state, dispatch } = useTermsContext();
   const [isEdit, setIsEdit] = useState(false);
@@ -45,9 +45,11 @@ export const TermsScreen = () => {
       // setIsEdit(!isEdit);
       history.replace('/settings/terms/edit')
     } else {
+      setIsLoading(true)
       const update = await updateTermsDocument(editedTerms);
       dispatch({ type: "UPDATE_TERMS", payload: editedTerms });
       // setIsEdit(!isEdit);
+      setIsLoading(false)
       history.replace('/settings/terms')
 
     }
