@@ -16,6 +16,8 @@ export const Sidemenu = ({ isLogin }) => {
   } = useVehicleContext();
 
   const getVehiclesCall = async () => {
+    console.log('console 2')
+
     const vehicleListApiCall = await firestore
       .collection(`vehicles`)
       .where("adminId", "==", state.user.uid)
@@ -53,7 +55,7 @@ export const Sidemenu = ({ isLogin }) => {
       }
     }
     if (state.user) initializeIntervalDoc();
-  },[])
+  },[state])
 
   const onChangeVehicle = (vehcile) => {
     vehicleDispatch({ type: "UPDATE_SELECTED_VEHICLE", payload: vehcile });
@@ -62,6 +64,7 @@ export const Sidemenu = ({ isLogin }) => {
 
   useEffect(()=> {
     const intervalRef = setInterval(()=> {
+      console.log('console 1')
       if (state.user && timeInterval) getVehiclesCall();
     }, timeInterval)
 
