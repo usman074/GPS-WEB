@@ -10,10 +10,10 @@ export const AppContainer = styled.div`
 
 export const HeaderWrapper = styled.div`
     grid-area: header;
-    /* position: fixed;
-    right: 0px;
+    position: fixed;
+    z-index: 1;
     width: calc(100% - 256px);
-    z-index: 1; */
+    left: 256px;
 `;
 
 export const SidemenuWrapper = styled.div`
@@ -24,5 +24,5 @@ export const ContentWrapper = styled.div`
     grid-area: ${props=> props.isLogin? 'content': 'unset'};
     height: ${props=> props.isLogin? '100vh': 'auto'};
     background: white;
-    margin-top: ${props=> props.isLogin? '7.5rem': '0px'};
+    margin-top: ${props=> props.isLogin? '15rem': '0px'};
 `;
