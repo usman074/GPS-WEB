@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { DrawerStyled } from "./style";
 import { Button } from "../index";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useVehicleContext } from "../../../providers/VehicleProvider";
 import { firestore, getIntervalDocument } from "../../../firebase";
 import { useHistory } from "react-router-dom";
+import { Checkbox } from "antd";
 
 export const Sidemenu = ({ isLogin }) => {
   const history = useHistory();
   const [timeInterval, setTimeInterval] = useState(0);
+  const [checkAll, setCheckAll] = useState(true);
   const { state } = useAuthContext();
   const {
     state: vehicleState,
@@ -16,8 +18,6 @@ export const Sidemenu = ({ isLogin }) => {
   } = useVehicleContext();
 
   const getVehiclesCall = async () => {
-    console.log('console 2')
-
     const vehicleListApiCall = await firestore
       .collection(`vehicles`)
       .where("adminId", "==", state.user.uid)
@@ -45,35 +45,45 @@ export const Sidemenu = ({ isLogin }) => {
     if (state.user) getVehiclesCall();
   }, [state]);
 
-  useEffect(()=> {
-    const initializeIntervalDoc = async ()=> {
+  useEffect(() => {
+    const initializeIntervalDoc = async () => {
       const intervalDoc = await getIntervalDocument("123456789");
-      if(intervalDoc.refreshInterval.type === 'min') {
-        setTimeInterval(intervalDoc.refreshInterval.value * 60000)
+      if (intervalDoc.refreshInterval.type === "min") {
+        setTimeInterval(intervalDoc.refreshInterval.value * 60000);
       } else {
-        setTimeInterval(intervalDoc.refreshInterval.value * 60 * 60000)
+        setTimeInterval(intervalDoc.refreshInterval.value * 60 * 60000);
       }
-    }
+    };
     if (state.user) initializeIntervalDoc();
-  },[state])
+  }, [state]);
 
   const onChangeVehicle = (vehcile) => {
     vehicleDispatch({ type: "UPDATE_SELECTED_VEHICLE", payload: vehcile });
-    console.log('usman here 2')
-
-    history.replace('/dashboard');
   };
 
-  useEffect(()=> {
-    const intervalRef = setInterval(()=> {
-      console.log('console 1')
-      if (state.user && timeInterval) getVehiclesCall();
-    }, timeInterval)
+  useEffect(() => {
+    setCheckAll(
+      vehicleState.vehicles.length === vehicleState.selectedVehicle.length
+    );
+  }, [vehicleState.selectedVehicle]);
 
-    return ()=> {
-      clearInterval(intervalRef)
-    }
-  })
+  const onCheckAllVehicles = (e) => {
+    vehicleDispatch({
+      type: "UPDATE_SELECTED_VEHICLE_WITH_OBJ",
+      payload: e.target.checked ? vehicleState.vehicles : [],
+    });
+    setCheckAll(e.target.checked);
+  };
+
+  useEffect(() => {
+    const intervalRef = setInterval(() => {
+      if (state.user && timeInterval) getVehiclesCall();
+    }, timeInterval);
+
+    return () => {
+      clearInterval(intervalRef);
+    };
+  });
 
   return (
     <DrawerStyled
@@ -99,19 +109,30 @@ export const Sidemenu = ({ isLogin }) => {
       }}
     >
       <Button className="sidemenu-content-heading" name="Mobile location" />
-      {vehicleState.vehicles.map((vehicle) => (
-        <Button
-          key={vehicle.uid}
-          className={`vehicles ${
-            vehicle.uid === vehicleState.selectedVehicle.uid
-              ? "selected-vehicle"
-              : ""
-          }`}
-          name={vehicle.vehicleName}
-          clickEvent={() => onChangeVehicle(vehicle)}
-        />
-      ))}
-     
+      <Button
+        className="loc-update-btn"
+        name="Update Location Now"
+        clickEvent={getVehiclesCall}
+      />
+      <Checkbox
+        className="vehicles"
+        onChange={onCheckAllVehicles}
+        checked={checkAll}
+      >
+        Select All Vehicles
+      </Checkbox>
+      <Checkbox.Group
+        value={vehicleState.selectedVehicle}
+        onChange={onChangeVehicle}
+      >
+        {vehicleState.vehicles.map((vehicle) => (
+          <div key={vehicle.uid}>
+            <Checkbox className="vehicles" value={vehicle.uid}>
+              {vehicle.vehicleName}
+            </Checkbox>
+          </div>
+        ))}
+      </Checkbox.Group>
     </DrawerStyled>
   );
 };
