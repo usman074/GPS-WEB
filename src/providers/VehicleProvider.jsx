@@ -2,7 +2,7 @@ import React, { useReducer, createContext, useContext } from "react";
 
 const initialState = {
   vehicles: [],
-  selectedVehicle: null,
+  selectedVehicle: [],
 };
 
 export const vehicleReducer = (state = initialState, action) => {
@@ -11,12 +11,17 @@ export const vehicleReducer = (state = initialState, action) => {
       return {
         ...state,
         vehicles: action.payload,
-        selectedVehicle: action.payload[0],
+        selectedVehicle: state.selectedVehicle.length? state.selectedVehicle: action.payload.map((item) => item.uid),
       };
     case "UPDATE_SELECTED_VEHICLE":
       return {
         ...state,
         selectedVehicle: action.payload,
+      };
+    case "UPDATE_SELECTED_VEHICLE_WITH_OBJ":
+      return {
+        ...state,
+        selectedVehicle: action.payload.map((item) => item.uid),
       };
     default:
       return state;
