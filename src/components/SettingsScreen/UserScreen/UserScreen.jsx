@@ -48,13 +48,11 @@ export const CreateUser = ({ setIsLoading }) => {
       return Yup.object({
         name: Yup.string().required("Required"),
         username: Yup.string().required("Required"),
-        email: Yup.string().email("Invalid email address").required("Required"),
       });
     } else {
       return Yup.object({
         name: Yup.string().required("Required"),
         username: Yup.string().required("Required"),
-        email: Yup.string().email("Invalid email address").required("Required"),
         password: Yup.string()
           .min(8, "Must be 8 characters or more")
           .required("Required"),
@@ -70,7 +68,6 @@ export const CreateUser = ({ setIsLoading }) => {
       if (currentUser) {
         const editedData = {
           name: values.name,
-          email: values.email,
           username: values.username,
           isAdmin: false,
           adminId: uid,
@@ -89,8 +86,12 @@ export const CreateUser = ({ setIsLoading }) => {
           setIsLoading(false);
         }
       } else {
+        if (values.username.split(' ').length > 1) {
+          alert('Space not allowed in username')
+          return;
+        }
         const { user } = await auth.createUserWithEmailAndPassword(
-          values.email,
+          `${values.username}@gmail.com`,
           values.password
         );
         setIsLoading(true);
@@ -117,7 +118,6 @@ export const CreateUser = ({ setIsLoading }) => {
             : {
                 name: "",
                 username: "",
-                email: "",
                 password: "",
                 confirmPassword: "",
               }
@@ -138,13 +138,6 @@ export const CreateUser = ({ setIsLoading }) => {
           <Input
             className="create-user-input"
             name="username"
-            type="text"
-          />
-
-          <p className="label">Email</p>
-          <Input
-            className="create-user-input"
-            name="email"
             type="text"
             disabled={currentUser ? true : false}
           />
