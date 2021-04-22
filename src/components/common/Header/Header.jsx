@@ -4,20 +4,24 @@ import { HeaderWrapper } from "./style";
 import { UploadOutlined } from "@ant-design/icons";
 import { Space } from "antd";
 import { useLocation, useHistory } from "react-router-dom";
-import {useAuthContext} from '../../../providers/AuthProvider';
+import { useAuthContext } from "../../../providers/AuthProvider";
+import { useVehicleContext } from "../../../providers/VehicleProvider";
 
 export const Header = ({ setIsLogin, setToken }) => {
   const location = useLocation();
-  const{dispatch} = useAuthContext();
+  const { dispatch } = useAuthContext();
   const { pathname } = location;
   const history = useHistory();
   const changeScreen = (name) => {
     history.replace(name);
   };
+  const { dispatch: vehicleDispatch } = useVehicleContext();
 
   const logout = () => {
     setToken(null);
-    dispatch({type: 'DEL_USER', payload: null})
+    dispatch({ type: "DEL_USER", payload: null });
+    vehicleDispatch({ type: "INITIALIZE_DATA", payload: [] });
+    vehicleDispatch({ type: "UPDATE_SELECTED_VEHICLE", payload: [] });
     localStorage.removeItem("uid");
     setIsLogin(false);
   };
