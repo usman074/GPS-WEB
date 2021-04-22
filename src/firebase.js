@@ -141,7 +141,11 @@ export const generateIntervalDocument = async () => {
           gpsInterval: {
             value: "5",
             type: "min"
-          }
+          },
+          mapInterval: {
+            start: "5",
+            end: "8",
+          },
       });
     } catch (error) {
       console.error("Error creating interval document", error);

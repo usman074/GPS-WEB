@@ -5,7 +5,11 @@ import { Button, Input } from "../common";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useIntervalContext } from "../../providers/IntervalProvider";
-import { updateIntervalDocument, generateIntervalDocument, getIntervalDocument } from "../../firebase";
+import {
+  updateIntervalDocument,
+  generateIntervalDocument,
+  getIntervalDocument,
+} from "../../firebase";
 import Loader from "react-loader-spinner";
 
 export const IntervalScreen = () => {
@@ -56,25 +60,28 @@ export const IntervalScreen = () => {
     );
   };
 
-  useEffect(()=> {
-    const initializeIntervalDoc = async ()=> {
+  useEffect(() => {
+    const initializeIntervalDoc = async () => {
       const intervalDoc = await getIntervalDocument("123456789");
       dispatch({ type: "INITIALIZE_INTERVAL", payload: intervalDoc });
-    }
+    };
     initializeIntervalDoc();
-  },[])
+  }, []);
 
-
-  useEffect(()=> {
+  useEffect(() => {
     if (state.interval) {
-      setShowDropdown(
-        {
-          "dropdownOne": {...showDropdown["dropdownOne"], text: state.interval.refreshInterval.type},
-          "dropdownTwo": {...showDropdown["dropdownTwo"], text: state.interval.gpsInterval.type}
-        }
-      )
+      setShowDropdown({
+        dropdownOne: {
+          ...showDropdown["dropdownOne"],
+          text: state.interval.refreshInterval.type,
+        },
+        dropdownTwo: {
+          ...showDropdown["dropdownTwo"],
+          text: state.interval.gpsInterval.type,
+        },
+      });
     }
-  },[state])
+  }, [state]);
 
   const handleSetIntervalForm = async (values) => {
     const updatedValues = {
@@ -88,10 +95,10 @@ export const IntervalScreen = () => {
         type: showDropdown.dropdownTwo.text,
       },
     };
-    setIsLoading(true)
+    setIsLoading(true);
     const intervalDoc = await updateIntervalDocument(updatedValues);
     dispatch({ type: "UPDATE_INTERVAL", payload: intervalDoc });
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const validateSetIntervalForm = () => {
@@ -102,24 +109,34 @@ export const IntervalScreen = () => {
           .positive("positive number")
           .required("Required"),
       }),
+      mapInterval: Yup.object().shape({
+        start: Yup.number()
+          .typeError("required number")
+          .positive("positive number")
+          .required("Required"),
+        end: Yup.number()
+          .typeError("required number")
+          .positive("positive number")
+          .required("Required"),
+      }),
+
       gpsInterval: Yup.object().shape({
         value: Yup.number()
           .typeError("required number")
           .positive("positive number")
           .required("Required"),
-      })
+      }),
     });
   };
-  return (
-    isLoading ? (
-      <Loader
-        type="Oval"
-        color="#464646"
-        height={100}
-        width={100}
-        visible={true}
-      />
-    ) :
+  return isLoading ? (
+    <Loader
+      type="Oval"
+      color="#464646"
+      height={100}
+      width={100}
+      visible={true}
+    />
+  ) : (
     <Formik
       initialValues={
         state.interval
@@ -130,6 +147,10 @@ export const IntervalScreen = () => {
               },
               gpsInterval: {
                 value: "",
+              },
+              mapInterval: {
+                start: "",
+                end: "",
               },
             }
       }
@@ -148,7 +169,24 @@ export const IntervalScreen = () => {
             />
             {dropdown("dropdownOne")}
           </div>
-          
+
+          <div className="interval-wrapper">
+            <p>Update map intervel (between8:00 pm and 6:00 am)</p>
+            <Input
+              className="interval-input"
+              name="mapInterval.start"
+              type="text"
+              suffix={"am"}
+            />
+
+            <Input
+              className="interval-input"
+              name="mapInterval.end"
+              type="text"
+              suffix={"pm"}
+            />
+          </div>
+
           <div className="interval-wrapper">
             <p>interval for sending GPS data</p>
 
