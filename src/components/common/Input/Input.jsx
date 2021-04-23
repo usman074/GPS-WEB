@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyledInput, InputWrapper } from "./style";
 import { useField } from "formik";
 
