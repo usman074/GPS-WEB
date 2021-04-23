@@ -113,7 +113,7 @@ export const Sidemenu = ({ isLogin }) => {
         name={state.user?.language === 'English'? English.UPDATE_LOCATION_NOW: German.UPDATE_LOCATION_NOW}
         clickEvent={getVehiclesCall}
       />
-      {vehicleState.vehicles.length && <Checkbox
+      {vehicleState.vehicles.length > 0 && <Checkbox
         className="vehicles"
         onChange={onCheckAllVehicles}
         checked={checkAll}
