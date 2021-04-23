@@ -7,13 +7,11 @@ import { useHistory } from "react-router-dom";
 import { auth, generateUserDocument } from "../../firebase";
 import { useAuthContext } from "../../providers/AuthProvider";
 
-
 export const LoginScreen = (props) => {
   const { isLogin, setIsLogin } = props;
 
   const history = useHistory();
   const { state, dispatch } = useAuthContext();
-
 
   useEffect(() => {
     if (!isLogin && state.user && state.isLogin) {
@@ -23,7 +21,11 @@ export const LoginScreen = (props) => {
     }
   }, [state]);
 
-
+  useEffect(() => {
+    if (isLogin) {
+      history.replace("/dashboard");
+    }
+  });
 
   const validateLoginForm = () => {
     return Yup.object({
@@ -50,7 +52,7 @@ export const LoginScreen = (props) => {
       dispatch({ type: "DEL_USER", payload: null });
     }
   };
-  
+
   return (
     <LoginWrapper>
       <LoginContainer>
@@ -69,10 +71,7 @@ export const LoginScreen = (props) => {
             <Input name="email" type="text" />
 
             <p className="label">Password</p>
-            <Input
-              name="password"
-              type="password"
-            />
+            <Input name="password" type="password" />
 
             <Button className="login-button" type="submit" name={"Sign In"} />
           </Form>
