@@ -22,7 +22,6 @@ export const LanguageList = () => {
 
   useEffect(() => {
     if (state && state.user) {
-      console.log(state.user);
       setSelectedLang(state.user.language);
     }
   }, [state]);

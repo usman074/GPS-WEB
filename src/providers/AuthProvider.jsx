@@ -8,8 +8,6 @@ export const initialState = {
 function authReducer(state = initialState, action) {
   switch (action.type) {
     case "SAVE_USER":
-      console.log("action.payload", action.payload);
-
       return {
         ...state,
         user: action.payload,
