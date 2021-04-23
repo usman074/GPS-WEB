@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { List } from "antd";
-import {
-  LanguageListContainer,
-  ListContainer
-} from "../style";
+import { LanguageListContainer, ListContainer } from "../style";
 import { Button } from "../../common";
-import languages from 'language-list';
-import {useAuthContext} from '../../../providers/AuthProvider';
+// import languages from 'language-list';
+import { useAuthContext } from "../../../providers/AuthProvider";
+import { updateLanguage } from "../../../firebase";
 
 export const LanguageList = () => {
-  const langList = languages().getData()
-  const {state, dispatch} = useAuthContext();
+  // const langList = languages().getData()
+  const langList = ["English", "German"];
+  const { state, dispatch } = useAuthContext();
   const [selectedLang, setSelectedLang] = useState(null);
-  const changeLanguage = (code)=> {
-    console.log(code)
-  }
+  const changeLanguage = () => {
+    const updateLang = async () => {
+      await updateLanguage({...state.user}, selectedLang);
+      dispatch({type: 'UPDATE_LANG', payload: selectedLang})
+    };
+    if (state.user) updateLang();
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (state && state.user) {
-      console.log(state.user)
+      console.log(state.user);
       setSelectedLang(state.user.language);
     }
-  },[state])
+  }, [state]);
 
   return (
     <LanguageListContainer>
@@ -32,31 +35,40 @@ export const LanguageList = () => {
         bordered={false}
         split={false}
         renderItem={(item) => (
-          <List.Item className={`${selectedLang === item.code ? "selected" : ""}`} onClick={()=> setSelectedLang(item.code)}>
-            {item.language}
+          <List.Item
+            className={`${selectedLang === item ? "selected" : ""}`}
+            onClick={() => setSelectedLang(item)}
+          >
+            {item}
           </List.Item>
         )}
       />
-      <Button className="change-lang-button" name={"Save language"} onClick={()=> changeLanguage()} />
+      <Button
+        className="change-lang-button"
+        name={"Save language"}
+        clickEvent={changeLanguage}
+      />
     </LanguageListContainer>
   );
 };
 
 export const SelectedLang = () => {
-  const {state, dispatch} = useAuthContext();
+  const { state, dispatch } = useAuthContext();
 
   const [selectedLang, setSelectedLang] = useState(null);
-  useEffect(()=> {
+  useEffect(() => {
     if (state && state.user) {
       setSelectedLang(state.user.language);
     }
-  },[state])
+  }, [state]);
   return (
     <ListContainer className="lang-list">
       <Button className="user-list-button" name={"Current Language"} />
-      {selectedLang && <div className="usersListWrapper">
-        <p className="lang-name">{languages().getLanguageName(selectedLang)}</p>
-      </div>}
+      {selectedLang && (
+        <div className="usersListWrapper">
+          <p className="lang-name">{selectedLang}</p>
+        </div>
+      )}
     </ListContainer>
   );
 };

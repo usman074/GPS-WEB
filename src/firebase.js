@@ -27,7 +27,7 @@ export const generateUserDocument = async (user, additionalData) => {
     try {
       await userRef.set({
         email,
-        // language: 'en',
+        language: 'English',
         ...additionalData,
       });
     } catch (error) {
@@ -191,5 +191,22 @@ export const delUserVehicleDocument = async (uid) => {
     return true;
   } catch (error) {
     console.error("Error deleting user vehicle document", error);
+  }
+};
+
+export const updateLanguage = async (user, lang) => {
+  if (!user) return;
+
+  const userRef = firestore.doc(`users/${user.uid}`);
+
+  delete user.uid;
+  try {
+    const userData = await userRef.update({
+      ...user,
+      language: lang
+    });
+    return true;
+  } catch (error) {
+    console.error("Error updating user document", error);
   }
 };
