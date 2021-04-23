@@ -228,7 +228,7 @@ export const UsersList = ({ setIsLoading }) => {
       <Button
         className="user-list-button"
         name={
-          state.user?.language === "English"
+          user?.language === "English"
             ? English.USERS_LIST
             : German.USERS_LIST
         }
