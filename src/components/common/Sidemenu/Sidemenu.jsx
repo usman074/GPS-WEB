@@ -4,11 +4,10 @@ import { Button } from "../index";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useVehicleContext } from "../../../providers/VehicleProvider";
 import { firestore, getIntervalDocument } from "../../../firebase";
-import { useHistory } from "react-router-dom";
 import { Checkbox } from "antd";
+import {English, German} from '../../../language.json';
 
 export const Sidemenu = ({ isLogin }) => {
-  const history = useHistory();
   const [timeInterval, setTimeInterval] = useState(0);
   const [checkAll, setCheckAll] = useState(true);
   const { state } = useAuthContext();
@@ -87,7 +86,7 @@ export const Sidemenu = ({ isLogin }) => {
 
   return (
     <DrawerStyled
-      title={"GPS WEB"}
+      title={state.user?.language === 'English'? English.GPS_WEB: German.GPS_WEB}
       placement="left"
       closable={false}
       visible={isLogin}
@@ -108,10 +107,10 @@ export const Sidemenu = ({ isLogin }) => {
         alignItems: "center",
       }}
     >
-      <Button className="sidemenu-content-heading" name="Mobile location" />
+      <Button className="sidemenu-content-heading" name={state.user?.language === 'English'? English.MOBILE_LOCATION: German.MOBILE_LOCATION} />
       <Button
         className="loc-update-btn"
-        name="Update Location Now"
+        name={state.user?.language === 'English'? English.UPDATE_LOCATION_NOW: German.UPDATE_LOCATION_NOW}
         clickEvent={getVehiclesCall}
       />
       <Checkbox
@@ -119,7 +118,7 @@ export const Sidemenu = ({ isLogin }) => {
         onChange={onCheckAllVehicles}
         checked={checkAll}
       >
-        Select All Vehicles
+        {state.user?.language === 'English'? English.SELECT_ALL_VEHICLES: German.SELECT_ALL_VEHICLES}
       </Checkbox>
       <Checkbox.Group
         value={vehicleState.selectedVehicle}

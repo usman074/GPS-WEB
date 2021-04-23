@@ -1,0 +1,72 @@
+{
+    "English": {
+        "GPS_WEB": "GPS WEB",
+        "MOBILE_LOCATION": "Mobile Location",
+        "UPDATE_LOCATION_NOW": "Update Location Now",
+        "SELECT_ALL_VEHICLES": "Select All Vehicles",
+
+        "DASHBOARD": "Dashboard",
+        "INTERVAL": "Interval",
+        "SETTINGS": "Settings",
+        "LOGOUT": "Logout",
+
+        "REFRESH_INTERVAL": "Refresh Interval",
+        "UPDATE_MAP_INTERVAL": "Update map intervel (between8:00 pm and 6:00 am)",
+        "INTERVAL_FOR_SENDING_GPS_DATA": "interval for sending GPS data",
+        "SAVE": "Save",
+
+        "CREATE_USER": "Create User",
+        "NAME": "Name",
+        "USERNAME": "Username",
+        "PASSWORD": "Password",
+        "CONFIRM_PASSWPRD": "Confirm Password",
+        "CREATE": "Create",
+        "USERS_LIST": "Users List",
+
+        "CHANGE_LANGUAGE": "Change Language",
+        "SAVE_LANGUAGE": "Save Language",
+        "CURRENT_LANGUAGE": "Current Language",
+
+
+        "UPDATE_TERMS_AND_CONDITIONS": "Update Terms & Conditions",
+        "NO_TERMS_AND_CONDITIONS": "No Terms & Conditions",
+        "WRITE_TEXT": "Write a Text...",
+        "EDIT": "Edit",
+        "UPDATE": "Update"
+    },
+    "German": {
+        "GPS_WEB": "GPS WEB",
+        "MOBILE_LOCATION": "Mobiler Standort",
+        "UPDATE_LOCATION_NOW": "Standort jetzt aktualisieren",
+        "SELECT_ALL_VEHICLES": "Wählen Sie Alle Fahrzeuge",
+
+        "DASHBOARD": "Instrumententafel",
+        "INTERVAL": "Intervall",
+        "SETTINGS": "Einstellungen",
+        "LOGOUT": "Ausloggen",
+
+        "REFRESH_INTERVAL": "aktualisieren intervall",
+        "UPDATE_MAP_INTERVAL": "aktualisieren Karte intervall",
+        "INTERVAL_FOR_SENDING_GPS_DATA": "Intervall zum Senden von GPS-Daten",
+        "SAVE": "speichern",
+
+        "CREATE_USER": "Erstellen Benutzer",
+        "NAME": "Name",
+        "USERNAME": "Nutzername",
+        "PASSWORD": "Pásswort",
+        "CONFIRM_PASSWPRD": "Pásswort Bestätigen",
+        "CREATE": "Erstellen",
+        "USERS_LIST": "Benutzerliste",
+
+        "CHANGE_LANGUAGE": "Veränderung Sprache",
+        "SAVE_LANGUAGE": "Sprache speichern",
+        "CURRENT_LANGUAGE": "Aktuelle Sprache",
+
+
+        "UPDATE_TERMS_AND_CONDITIONS": "Aktualisieren Bedingungen & Bedingungen",
+        "NO_TERMS_AND_CONDITIONS": "Keine Allgemeinen Geschäftsbedingungen",
+        "WRITE_TEXT": "Schreiben Sie einen Text...",
+        "EDIT": "Bearbeiten",
+        "UPDATE": "Aktualisieren"
+    }
+}

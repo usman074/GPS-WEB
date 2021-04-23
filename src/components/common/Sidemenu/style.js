@@ -32,7 +32,7 @@ export const DrawerStyled = styled(Drawer)`
     font-size: 1.2rem;
     background-color: #464646;
     color: #ffffff;
-    max-width: 16rem;
+    max-width: 17rem;
     max-height: 3.3rem;
     border-radius: 1rem;
   }

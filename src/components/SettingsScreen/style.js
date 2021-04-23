@@ -132,7 +132,7 @@ export const LanguageListContainer = styled.div`
   }
 
   .change-lang-button {
-    max-width: 15rem;
+    max-width: 17rem;
     background: #464646;
     border-radius: 1rem;
 

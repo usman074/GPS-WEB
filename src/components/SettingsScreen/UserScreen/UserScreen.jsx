@@ -17,6 +17,7 @@ import {
 import { useUserContext } from "../../../providers/UserProvider";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useHistory, useLocation } from "react-router-dom";
+import { English, German } from "../../../language.json";
 
 export const CreateUser = ({ setIsLoading }) => {
   const { state, dispatch } = useUserContext();
@@ -86,8 +87,8 @@ export const CreateUser = ({ setIsLoading }) => {
           setIsLoading(false);
         }
       } else {
-        if (values.username.split(' ').length > 1) {
-          alert('Space not allowed in username')
+        if (values.username.split(" ").length > 1) {
+          alert("Space not allowed in username");
           return;
         }
         const { user } = await auth.createUserWithEmailAndPassword(
@@ -127,14 +128,14 @@ export const CreateUser = ({ setIsLoading }) => {
         enableReinitialize
       >
         <Form>
-          <p className="label">Name</p>
-          <Input
-            className="create-user-input"
-            name="name"
-            type="text"
-          />
+          <p className="label">
+            {user?.language === "English" ? English.NAME : German.NAME}
+          </p>
+          <Input className="create-user-input" name="name" type="text" />
 
-          <p className="label">Username</p>
+          <p className="label">
+            {user?.language === "English" ? English.USERNAME : German.USERNAME}
+          </p>
           <Input
             className="create-user-input"
             name="username"
@@ -144,14 +145,22 @@ export const CreateUser = ({ setIsLoading }) => {
 
           {!currentUser && (
             <>
-              <p className="label">Password</p>
+              <p className="label">
+                {user?.language === "English"
+                  ? English.PASSWORD
+                  : German.PASSWORD}
+              </p>
               <Input
                 className="create-user-input"
                 name="password"
                 type="password"
               />
 
-              <p className="label">Confirm Password</p>
+              <p className="label">
+                {user?.language === "English"
+                  ? English.CONFIRM_PASSWPRD
+                  : German.CONFIRM_PASSWPRD}
+              </p>
               <Input
                 className="create-user-input"
                 name="confirmPassword"
@@ -164,6 +173,15 @@ export const CreateUser = ({ setIsLoading }) => {
             className="create-user-button"
             type="submit"
             name={currentUser ? "Update" : "Create"}
+            name={
+              currentUser
+                ? user?.language === "English"
+                  ? English.UPDATE
+                  : German.UPDATE
+                : user?.language === "English"
+                ? English.CREATE
+                : German.CREATE
+            }
           />
         </Form>
       </Formik>
@@ -197,17 +215,24 @@ export const UsersList = ({ setIsLoading }) => {
   }, []);
 
   const handleDelUser = async (uid) => {
-    setIsLoading(true)
+    setIsLoading(true);
     const userDoc = await getUserDocument(uid);
     await updateUserDocument({ ...userDoc, isActive: false });
     await delUserVehicleDocument(userDoc.uid);
     dispatch({ type: "DEL_USER", uid: userDoc.uid });
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
     <ListContainer>
-      <Button className="user-list-button" name={"Users List"} />
+      <Button
+        className="user-list-button"
+        name={
+          state.user?.language === "English"
+            ? English.USERS_LIST
+            : German.USERS_LIST
+        }
+      />
 
       {usersList
         .filter((user) => user.adminId === uid)

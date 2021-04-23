@@ -6,10 +6,12 @@ import { Space } from "antd";
 import { useLocation, useHistory } from "react-router-dom";
 import { useAuthContext } from "../../../providers/AuthProvider";
 import { useVehicleContext } from "../../../providers/VehicleProvider";
+import {English, German} from '../../../language.json';
+
 
 export const Header = ({ setIsLogin, setToken }) => {
   const location = useLocation();
-  const { dispatch } = useAuthContext();
+  const { state, dispatch } = useAuthContext();
   const { pathname } = location;
   const history = useHistory();
   const changeScreen = (name) => {
@@ -30,21 +32,21 @@ export const Header = ({ setIsLogin, setToken }) => {
     <HeaderWrapper>
       <Space size={90}>
         <Button
-          name="Dashboard"
+          name={state.user?.language === 'English'? English.DASHBOARD: German.DASHBOARD}
           className={`header-buttons ${
             pathname === "/dashboard" ? "active" : ""
           }`}
           clickEvent={() => changeScreen("/dashboard")}
         />
         <Button
-          name="Interval"
+          name={state.user?.language === 'English'? English.INTERVAL: German.INTERVAL}
           className={`header-buttons ${
             pathname === "/interval" ? "active" : ""
           }`}
           clickEvent={() => changeScreen("/interval")}
         />
         <Button
-          name="Settings"
+          name={state.user?.language === 'English'? English.SETTINGS: German.SETTINGS}
           className={`header-buttons ${
             pathname === "/settings/user" ||
             pathname === "/settings/language" ||
@@ -56,7 +58,7 @@ export const Header = ({ setIsLogin, setToken }) => {
         />
       </Space>
       <span onClick={() => logout()}>
-        <UploadOutlined style={{ color: "red" }} /> <p>Log Out</p>
+        <UploadOutlined style={{ color: "red" }} /> <p>{state.user?.language === 'English'? English.LOGOUT: German.LOGOUT}</p>
       </span>
     </HeaderWrapper>
   );

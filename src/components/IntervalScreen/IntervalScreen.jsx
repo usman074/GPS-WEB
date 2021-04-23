@@ -5,15 +5,17 @@ import { Button, Input } from "../common";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { useIntervalContext } from "../../providers/IntervalProvider";
+import { useAuthContext } from "../../providers/AuthProvider";
 import {
   updateIntervalDocument,
-  generateIntervalDocument,
   getIntervalDocument,
 } from "../../firebase";
+import {English, German} from '../../language.json';
 import Loader from "react-loader-spinner";
 
 export const IntervalScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { state: authState } = useAuthContext();
 
   const [showDropdown, setShowDropdown] = useState({
     dropdownOne: { open: false, text: "hours" },
@@ -161,7 +163,7 @@ export const IntervalScreen = () => {
       <Form>
         <IntervalContainer>
           <div className="interval-wrapper">
-            <p>Refresh interval</p>
+            <p>{authState.user?.language === 'English'? English.REFRESH_INTERVAL: German.REFRESH_INTERVAL}</p>
             <Input
               className="interval-input"
               name="refreshInterval.value"
@@ -171,7 +173,7 @@ export const IntervalScreen = () => {
           </div>
 
           <div className="interval-wrapper">
-            <p>Update map intervel (between8:00 pm and 6:00 am)</p>
+            <p>{authState.user?.language === 'English'? English.UPDATE_MAP_INTERVAL: German.UPDATE_MAP_INTERVAL}</p>
             <Input
               className="interval-input"
               name="mapInterval.start"
@@ -188,7 +190,7 @@ export const IntervalScreen = () => {
           </div>
 
           <div className="interval-wrapper">
-            <p>interval for sending GPS data</p>
+            <p>{authState.user?.language === 'English'? English.INTERVAL_FOR_SENDING_GPS_DATA: German.INTERVAL_FOR_SENDING_GPS_DATA}</p>
 
             <Input
               className="interval-input"
@@ -200,7 +202,7 @@ export const IntervalScreen = () => {
           <Button
             type="submit"
             className="interval-save-button"
-            name={"Save"}
+            name={authState.user?.language === 'English'? English.SAVE: German.SAVE}
           />
         </IntervalContainer>
       </Form>

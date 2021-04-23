@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useVehicleContext } from "../../providers/VehicleProvider";
-import GoogleMapReact, {fitBounds} from "google-map-react";
+import GoogleMapReact from "google-map-react";
 import { MarkerIcon } from "../../assets/index";
 import { CarNameStyled } from "./style";
 

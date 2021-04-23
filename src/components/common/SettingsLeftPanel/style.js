@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ContentWrapper = styled.div`
   grid-area: ${(props) => props.gridArea};
-  padding: 8rem 6rem 0px 8rem;
+  padding: 8rem 4rem 0px 6rem;
 
   @media (max-width: 1150px) {
     display: flex;
@@ -11,7 +11,7 @@ export const ContentWrapper = styled.div`
 
   .settings-buttons {
     margin: 0px 1rem 3rem 0px;
-    width: 20rem;
+    min-width: 20rem;
     max-height: 4.5rem;
     background: #F8F8F8;
     color: #464646;

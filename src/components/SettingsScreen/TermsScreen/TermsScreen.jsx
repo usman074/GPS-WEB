@@ -3,10 +3,13 @@ import { TermsContentWrapper } from "../style";
 import { Button } from "../../common";
 import { Input } from "antd";
 import { useTermsContext } from "../../../providers/TermsProvider";
-import { generateTermsDocument, getTermsDocument, updateTermsDocument } from "../../../firebase";
+import { useAuthContext } from "../../../providers/AuthProvider";
+import { generateTermsDocument, updateTermsDocument } from "../../../firebase";
 import { useHistory, useLocation } from "react-router-dom";
+import {English, German} from '../../../language.json';
 
 export const TermsScreen = ({setIsLoading}) => {
+  const { state: authState } = useAuthContext();
   const { TextArea } = Input;
   const { state, dispatch } = useTermsContext();
   const [isEdit, setIsEdit] = useState(false);
@@ -58,14 +61,14 @@ export const TermsScreen = ({setIsLoading}) => {
   return (
     <TermsContentWrapper>
       {!isEdit && (
-        <p>{state.terms ? state.terms : "No Terms & Conditions"}</p>
+        <p>{state.terms ? state.terms : state.user?.language === 'English'? English.NO_TERMS_AND_CONDITIONS: German.NO_TERMS_AND_CONDITIONS}</p>
       )}
 
       {isEdit && (
         <div className="terms-input">
           <TextArea
             rows={10}
-            placeholder="Write a Text..."
+            placeholder={state.user?.language === 'English'? English.WRITE_TEXT: German.WRITE_TEXT}
             defaultValue={state.terms}
             onChange={onTermsChange}
           />
@@ -73,7 +76,7 @@ export const TermsScreen = ({setIsLoading}) => {
       )}
       <Button
         className="edit-terms-button"
-        name={isEdit ? "Update" : "Edit"}
+        name={isEdit ? (state.user?.language === 'English'? English.UPDATE: German.UPDATE): state.user?.language === 'English'? English.EDIT: German.EDIT}
         clickEvent={() => onTermsSubmit()}
       />
     </TermsContentWrapper>
