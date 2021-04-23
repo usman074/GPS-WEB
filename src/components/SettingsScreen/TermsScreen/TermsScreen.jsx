@@ -61,14 +61,14 @@ export const TermsScreen = ({setIsLoading}) => {
   return (
     <TermsContentWrapper>
       {!isEdit && (
-        <p>{state.terms ? state.terms : state.user?.language === 'English'? English.NO_TERMS_AND_CONDITIONS: German.NO_TERMS_AND_CONDITIONS}</p>
+        <p>{state.terms ? state.terms : authState.user?.language === 'English'? English.NO_TERMS_AND_CONDITIONS: German.NO_TERMS_AND_CONDITIONS}</p>
       )}
 
       {isEdit && (
         <div className="terms-input">
           <TextArea
             rows={10}
-            placeholder={state.user?.language === 'English'? English.WRITE_TEXT: German.WRITE_TEXT}
+            placeholder={authState.user?.language === 'English'? English.WRITE_TEXT: German.WRITE_TEXT}
             defaultValue={state.terms}
             onChange={onTermsChange}
           />
@@ -76,7 +76,7 @@ export const TermsScreen = ({setIsLoading}) => {
       )}
       <Button
         className="edit-terms-button"
-        name={isEdit ? (state.user?.language === 'English'? English.UPDATE: German.UPDATE): state.user?.language === 'English'? English.EDIT: German.EDIT}
+        name={isEdit ? (authState.user?.language === 'English'? English.UPDATE: German.UPDATE): authState.user?.language === 'English'? English.EDIT: German.EDIT}
         clickEvent={() => onTermsSubmit()}
       />
     </TermsContentWrapper>
