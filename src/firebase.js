@@ -27,7 +27,7 @@ export const generateUserDocument = async (user, additionalData) => {
     try {
       await userRef.set({
         email,
-        language: 'English',
+        language: 'German',
         ...additionalData,
       });
     } catch (error) {
