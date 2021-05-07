@@ -35,7 +35,7 @@ export const Dashboard = () => {
           lat:  selectedVehicles.length? centerCoord.lat: 30.7438368,
           lng: selectedVehicles.length? centerCoord.lng: 73.3308934,
         }}
-        defaultZoom={0}
+        defaultZoom={10}
       >
         {selectedVehicles.map((vehicle) => (
           <AnyReactComponent
