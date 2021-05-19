@@ -24,5 +24,5 @@ export const ContentWrapper = styled.div`
     grid-area: ${props=> props.isLogin? 'content': 'unset'};
     height: ${props=> props.isLogin? '100vh': 'auto'};
     background: white;
-    margin-top: ${props=> props.isLogin? '15rem': '0px'};
+    margin-top: ${props=> (props.isLogin && props.layoutTopMargin)? '15rem': '0px'};
 `;

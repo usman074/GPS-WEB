@@ -19,7 +19,7 @@ import { VehicleProider } from "./providers/VehicleProvider";
 import { IntervalProvider } from "./providers/IntervalProvider";
 
 //External Libs
-import { Route, Redirect, Switch, useHistory } from "react-router-dom";
+import { Route, Redirect, Switch, useHistory, useLocation } from "react-router-dom";
 
 import "./App.css";
 import "antd/dist/antd.css";
@@ -35,7 +35,9 @@ function App() {
   const history = useHistory();
   const [isLogin, setIsLogin] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("uid"));
-
+  const location = useLocation();
+  const { pathname } = location;
+  const [layoutTopMargin, setLayoutTopMargin] = useState(true)
   useEffect(() => {
     if (token) {
       setIsLogin(true);
@@ -43,6 +45,14 @@ function App() {
       history.replace("/login");
     }
   }, [token]);
+
+  useEffect(() => {
+    if (pathname.includes("dashboard")) {
+      setLayoutTopMargin(false)
+    } else {
+      setLayoutTopMargin(true)
+    }
+  }, [pathname]);
   return (
     <div className="App">
       <AuthProvider>
@@ -60,7 +70,7 @@ function App() {
             )}
             <SettingUserContext setIsLogin={setIsLogin} />
             <Switch>
-              <ContentWrapper isLogin={isLogin}>
+              <ContentWrapper isLogin={isLogin}  layoutTopMargin={layoutTopMargin}>
                 <ProtectedRoute
                   exact
                   path="/dashboard"
