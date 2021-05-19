@@ -55,10 +55,10 @@ export const CreateUser = ({ setIsLoading }) => {
         name: Yup.string().required("Required"),
         username: Yup.string().required("Required"),
         password: Yup.string()
-          .min(4, "Must be 4 characters or more")
+          .min(6, "Must be 6 characters or more")
           .required("Required"),
         confirmPassword: Yup.string()
-          .min(4, "Must be 4 characters or more")
+          .min(6, "Must be 6 characters or more")
           .required("Required"),
       });
     }
@@ -91,20 +91,25 @@ export const CreateUser = ({ setIsLoading }) => {
           alert("Space not allowed in username");
           return;
         }
-        const { user } = await auth.createUserWithEmailAndPassword(
-          `${values.username}@gmail.com`,
-          values.password
-        );
-        setIsLoading(true);
-        const userDoc = await generateUserDocument(user, {
-          name: values.name,
-          username: values.username,
-          isAdmin: false,
-          adminId: uid,
-          isActive: true,
-        });
-        dispatch({ type: "ADD_USER", payload: userDoc });
-        setIsLoading(false);
+        try {
+          const { user } = await auth.createUserWithEmailAndPassword(
+            `${values.username}@gmail.com`,
+            values.password
+          );
+
+          setIsLoading(true);
+          const userDoc = await generateUserDocument(user, {
+            name: values.name,
+            username: values.username,
+            isAdmin: false,
+            adminId: uid,
+            isActive: true,
+          });
+          dispatch({ type: "ADD_USER", payload: userDoc });
+          setIsLoading(false);
+        } catch (e) {
+          alert(e.message)
+        }
       }
       actions.resetForm();
     } catch (error) {}
@@ -228,9 +233,7 @@ export const UsersList = ({ setIsLoading }) => {
       <Button
         className="user-list-button"
         name={
-          user?.language === "English"
-            ? English.USERS_LIST
-            : German.USERS_LIST
+          user?.language === "English" ? English.USERS_LIST : German.USERS_LIST
         }
       />
 
