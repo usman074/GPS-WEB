@@ -55,10 +55,10 @@ export const CreateUser = ({ setIsLoading }) => {
         name: Yup.string().required("Required"),
         username: Yup.string().required("Required"),
         password: Yup.string()
-          .min(8, "Must be 8 characters or more")
+          .min(4, "Must be 4 characters or more")
           .required("Required"),
         confirmPassword: Yup.string()
-          .min(8, "Must be 8 characters or more")
+          .min(4, "Must be 4 characters or more")
           .required("Required"),
       });
     }
