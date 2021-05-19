@@ -45,10 +45,10 @@ export const Dashboard = () => {
             text={vehicle && vehicle.vehicleName}
           />
         ))}
-        { selectedVehicles.length === 0 && <AnyReactComponent
+        {/* { selectedVehicles.length === 0 && <AnyReactComponent
           lat={30.7438368}
           lng={73.3308934}
-        />}
+        />} */}
       </GoogleMapReact>
     </div>
   );
